@@ -39,4 +39,7 @@ ext {
     rxandroidVersion = '2.0.1'
     butterknifeVersion = '8.8.1'
     butterknifeCompilerVersion = '8.8.1'
+    glideVersion = '4.0.0-RC1'
+    fragmentationCoreVersion = '1.2.7'
+    bannerVersion = '1.4.9'
 }

@@ -5,10 +5,12 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.wellhope.mywanandroid.R;
 import com.example.wellhope.mywanandroid.utils.ContextUtils;
@@ -41,14 +43,15 @@ public class BottomBarItem extends LinearLayout {
     private int selectColor;
 
     private void init(Context context, @DrawableRes int icon, String text) {
+        mContext = context;
         selectColor=ContextCompat.getColor(mContext, R.color.colorPrimary);
         unSelectColor =ContextCompat.getColor(mContext, R.color.tab_unSelect);
-        mContext = context;
         setOrientation(VERTICAL);
         setPadding(4,4,4,4);
         iconView = new ImageView(context);
         iconView.setImageResource(icon);
-        LayoutParams iconParams = new LayoutParams(ContextUtils.px2Dp(context,20),ContextUtils.px2Dp(context,20));
+
+        LayoutParams iconParams = new LayoutParams(ContextUtils.dip2px(context,24),ContextUtils.dip2px(context,24));
         iconParams.gravity = Gravity.CENTER_HORIZONTAL;
         iconParams.topMargin = ContextUtils.px2Dp(context,2.5f);
         iconView.setLayoutParams(iconParams);
@@ -59,7 +62,7 @@ public class BottomBarItem extends LinearLayout {
         textParams.gravity = Gravity.CENTER_HORIZONTAL;
         textParams.topMargin = ContextUtils.px2Dp(context,2.5f);
         textParams.bottomMargin = ContextUtils.px2Dp(context,2.5f);
-        textView.setLayoutParams(iconParams);
+        textView.setLayoutParams(textParams);
 
         addView(iconView);
         addView(textView);

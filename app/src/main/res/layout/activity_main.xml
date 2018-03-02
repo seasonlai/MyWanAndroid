@@ -6,9 +6,10 @@
     android:orientation="vertical">
 
     <FrameLayout
-        android:id="@+id/container"
+        android:id="@+id/contentContainer"
+        android:background="@android:color/darker_gray"
         android:layout_weight="1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"/>
 
     <com.example.wellhope.mywanandroid.widget.BottomBar
