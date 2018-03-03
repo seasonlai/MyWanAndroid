@@ -14,7 +14,8 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Component(modules = {
         AndroidSupportInjectionModule.class,
         ActivityOrFragmentModule.class,
-        BaseModule.class
+        BaseModule.class,
+        HttpModule.class
 })
 public interface AppComponent extends AndroidInjector<MyApp> {
 

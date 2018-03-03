@@ -16,6 +16,7 @@ import butterknife.Unbinder;
 public abstract class BaseActivity<T extends BasePresenter> extends SupportActivity {
 
     @Inject
+    @Nullable
     protected T mPesenter;
 
     Unbinder unbinder;

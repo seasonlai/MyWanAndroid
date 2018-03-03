@@ -1,6 +1,7 @@
 package com.example.wellhope.mywanandroid.ui.home;
 
 import com.example.wellhope.mywanandroid.base.BaseView;
+import com.example.wellhope.mywanandroid.bean.ArticlePageBean;
 import com.example.wellhope.mywanandroid.bean.BannerBean;
 import com.youth.banner.Banner;
 
@@ -12,12 +13,14 @@ import java.util.List;
 
 public class HomeContract {
 
-    interface View extends BaseView{
+    public interface View extends BaseView{
         void loadBanner(List<BannerBean> bannerList);
+        void loadArticle(List<ArticlePageBean.ItemBean> articleList);
     }
 
     interface Presenter{
-        void getData();
+        void getBanner();
+        void getPageArticle(int pageNum);
     }
 
 }

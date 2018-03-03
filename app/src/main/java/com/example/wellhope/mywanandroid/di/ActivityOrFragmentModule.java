@@ -1,6 +1,7 @@
 package com.example.wellhope.mywanandroid.di;
 
 import com.example.wellhope.mywanandroid.MainActivity;
+import com.example.wellhope.mywanandroid.ui.home.HomeFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -10,5 +11,9 @@ public abstract class ActivityOrFragmentModule {
 
     @ContributesAndroidInjector()
     abstract MainActivity mainActivity();
+
+    @ContributesAndroidInjector(modules = ViewModule.class)
+    abstract HomeFragment homeFragment();
+
 
 }

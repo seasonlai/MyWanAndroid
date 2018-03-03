@@ -23,6 +23,7 @@ import butterknife.Unbinder;
 public abstract class BaseFragment<T1 extends BasePresenter> extends SupportFragment implements BaseView{
 
     @Inject
+    @Nullable
     protected T1 mPresenter;
 
 //    @Nullable

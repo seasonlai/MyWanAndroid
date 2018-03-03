@@ -10,7 +10,7 @@ public class MsgBean<T> {
 
     private int errorCode;
     private String errorMsg;
-    private List<T> data;
+    private T data;
 
     public int getErrorCode() {
         return errorCode;
@@ -28,11 +28,11 @@ public class MsgBean<T> {
         this.errorMsg = errorMsg;
     }
 
-    public List<T> getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(List<T> data) {
+    public void setData(T data) {
         this.data = data;
     }
 }
