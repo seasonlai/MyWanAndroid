@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 import com.example.wellhope.mywanandroid.base.BaseActivity;
 import com.example.wellhope.mywanandroid.base.SupportFragment;
 import com.example.wellhope.mywanandroid.ui.home.HomeFragment;
+import com.example.wellhope.mywanandroid.utils.StatusBarUtil;
 import com.example.wellhope.mywanandroid.widget.BottomBar;
 
 import butterknife.BindView;
@@ -27,6 +28,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void bindView(@Nullable Bundle savedInstanceState) {
+
+        //contentView根部局为RelativeLayout
+        StatusBarUtil.setTranslucentForImageView(this,
+                null);
 
         if(savedInstanceState==null){
             mFragments[0] = HomeFragment.newInstance();
