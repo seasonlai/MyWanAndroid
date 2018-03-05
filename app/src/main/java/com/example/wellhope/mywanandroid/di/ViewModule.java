@@ -1,5 +1,7 @@
 package com.example.wellhope.mywanandroid.di;
 
+import com.example.wellhope.mywanandroid.ui.home.ArticleActivity;
+import com.example.wellhope.mywanandroid.ui.home.ArticleContract;
 import com.example.wellhope.mywanandroid.ui.home.HomeContract;
 import com.example.wellhope.mywanandroid.ui.home.HomeFragment;
 
@@ -14,4 +16,6 @@ public abstract class ViewModule {
 
     @Binds
     abstract HomeContract.View homeView(HomeFragment fragment);
+    @Binds
+    abstract ArticleContract.View articleView(ArticleActivity activity);
 }

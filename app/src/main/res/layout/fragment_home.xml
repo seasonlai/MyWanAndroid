@@ -1,8 +1,9 @@
-<FrameLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.wellhope.mywanandroid.ui.home.HomeFragment">
 
     <android.support.v7.widget.RecyclerView
@@ -11,4 +12,18 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"/>
 
-</FrameLayout>
+    <!--?attr/actionBarSize-->
+    <com.example.wellhope.mywanandroid.widget.MyToolBar
+        android:id="@+id/myToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="?attr/colorPrimary"
+        app:contentInsetLeft="0dp"
+        android:visibility="invisible"
+        app:contentInsetStart="0dp"
+        android:layout_marginTop="@dimen/statusbar_view_height"
+        app:layout_behavior="@string/MyToolBarBehavior"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        />
+
+</android.support.design.widget.CoordinatorLayout>

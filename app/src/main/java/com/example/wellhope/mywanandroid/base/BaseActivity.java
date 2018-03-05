@@ -13,7 +13,7 @@ import butterknife.Unbinder;
  * Created by Wellhope on 2018/3/2.
  */
 
-public abstract class BaseActivity<T extends BasePresenter> extends SupportActivity {
+public abstract class BaseActivity<T extends BasePresenter> extends SupportActivity implements BaseView{
 
     @Inject
     @Nullable
@@ -31,6 +31,11 @@ public abstract class BaseActivity<T extends BasePresenter> extends SupportActiv
         setContentView(getContentLayout());
         unbinder = ButterKnife.bind(this);
         bindView(savedInstanceState);
+        loadData();
+    }
+
+    protected void loadData(){
+
     }
 
     @Override
@@ -38,4 +43,31 @@ public abstract class BaseActivity<T extends BasePresenter> extends SupportActiv
         unbinder.unbind();
         super.onDestroy();
     }
+
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void showSuccess() {
+
+    }
+
+    @Override
+    public void showFailed() {
+
+    }
+
+    @Override
+    public void showNoNet() {
+
+    }
+
+    @Override
+    public void onRetry() {
+
+    }
+
 }

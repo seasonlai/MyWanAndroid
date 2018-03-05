@@ -2,6 +2,7 @@ package com.example.wellhope.mywanandroid;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.widget.FrameLayout;
 
 import com.example.wellhope.mywanandroid.base.BaseActivity;
@@ -30,8 +31,10 @@ public class MainActivity extends BaseActivity {
     protected void bindView(@Nullable Bundle savedInstanceState) {
 
         //contentView根部局为RelativeLayout
-        StatusBarUtil.setTranslucentForImageView(this,
-                null);
+//        StatusBarUtil.setTranslucentForImageView(this,
+//                null);
+        StatusBarUtil.setColor(this, ContextCompat.getColor(this,R.color.colorPrimary),
+                0);
 
         if(savedInstanceState==null){
             mFragments[0] = HomeFragment.newInstance();

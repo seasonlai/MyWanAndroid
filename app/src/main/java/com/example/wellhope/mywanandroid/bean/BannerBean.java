@@ -1,10 +1,13 @@
 package com.example.wellhope.mywanandroid.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by season on 2018/3/3.
  */
 
-public class BannerBean {
+public class BannerBean extends ParcelableBean {
 
     /**
      * desc : 一起来做个App吧
@@ -25,6 +28,30 @@ public class BannerBean {
     private String title;
     private int type;
     private String url;
+
+    protected BannerBean(Parcel in) {
+        super(in);
+        desc = in.readString();
+        id = in.readInt();
+        imagePath = in.readString();
+        isVisible = in.readInt();
+        order = in.readInt();
+        title = in.readString();
+        type = in.readInt();
+        url = in.readString();
+    }
+
+    public static final Creator<BannerBean> CREATOR = new Creator<BannerBean>() {
+        @Override
+        public BannerBean createFromParcel(Parcel in) {
+            return new BannerBean(in);
+        }
+
+        @Override
+        public BannerBean[] newArray(int size) {
+            return new BannerBean[size];
+        }
+    };
 
     public String getDesc() {
         return desc;
@@ -90,4 +117,20 @@ public class BannerBean {
         this.url = url;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(desc);
+        parcel.writeInt(id);
+        parcel.writeString(imagePath);
+        parcel.writeInt(isVisible);
+        parcel.writeInt(order);
+        parcel.writeString(title);
+        parcel.writeInt(type);
+        parcel.writeString(url);
+    }
 }

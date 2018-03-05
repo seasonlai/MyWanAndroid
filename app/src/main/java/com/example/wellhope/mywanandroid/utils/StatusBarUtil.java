@@ -46,7 +46,7 @@ public class StatusBarUtil {
      *
      * @param activity       需要设置的activity
      * @param color          状态栏颜色值
-     * @param statusBarAlpha 状态栏透明度
+     * @param statusBarAlpha 状态栏透明度 0不透明，1完全透明
      */
 
     public static void setColor(Activity activity, @ColorInt int color, @IntRange(from = 0, to = 255) int statusBarAlpha) {
