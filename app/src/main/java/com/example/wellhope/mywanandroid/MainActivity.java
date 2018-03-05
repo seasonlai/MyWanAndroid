@@ -33,8 +33,8 @@ public class MainActivity extends BaseActivity {
         //contentView根部局为RelativeLayout
 //        StatusBarUtil.setTranslucentForImageView(this,
 //                null);
-        StatusBarUtil.setColor(this, ContextCompat.getColor(this,R.color.colorPrimary),
-                0);
+//        StatusBarUtil.setColor(this, ContextCompat.getColor(this,R.color.colorPrimary),
+//                0);
 
         if(savedInstanceState==null){
             mFragments[0] = HomeFragment.newInstance();

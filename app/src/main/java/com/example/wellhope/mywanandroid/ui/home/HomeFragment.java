@@ -5,9 +5,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -24,7 +30,6 @@ import com.example.wellhope.mywanandroid.utils.StatusBarUtil;
 import com.example.wellhope.mywanandroid.widget.MyToolBar;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerClickListener;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
@@ -63,24 +68,33 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
     @Override
     protected void viewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+        StatusBarUtil.setTranslucentForImageView(getActivity(),
+                mMyToolBar);
+
         mMyToolBar.setAlphaChangeListener(new MyToolBar.AlphaChangeListener() {
             @Override
             public void alphaChange(float val, boolean isShow) {
-                StatusBarUtil.setColor(getActivity(),
+                StatusBarUtil.setTranslucentColor(getActivity(),
                         ContextCompat.getColor(getContext(), R.color.colorPrimary),
-                        (int) (255 * val));
+                        (int) (255-255 * val));
             }
 
             @Override
             public void alphaChangeEnd(boolean isShow) {
                 if (isShow) {
-                    StatusBarUtil.setColor(getActivity(),
-                            ContextCompat.getColor(getContext(), R.color.colorPrimary), 255);
+                    StatusBarUtil.setTranslucentColor(getActivity(),
+                            ContextCompat.getColor(getContext(), R.color.colorPrimary), 0);
                 } else {
-                    StatusBarUtil.setTranslucentForImageView(getActivity(), null);
+                    StatusBarUtil.setTranslucentColor(getActivity());
                 }
             }
         });
+
+        mMyToolBar.inflateMenu(R.menu.search);
+        final SearchView searchView=mMyToolBar.findViewById(R.id.toolbar_search);
+//        final SearchView searchView = (SearchView) item.getActionView();
+        searchView.setQueryHint("搜索关键词以空格隔开");
 
         mBanner_view = view.inflate(getContext(), R.layout.home_headerview, null);
         mBanner = mBanner_view.findViewById(R.id.banner);
@@ -118,6 +132,15 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        inflater.inflate(R.menu.search,menu);
+//        MenuItem item = menu.findItem(R.id.toolbar_search);
+//        final SearchView searchView = (SearchView) item.getActionView();
+//        searchView.setQueryHint("搜索关键词以空格隔开");
+//        super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void bannerToRead(BannerBean bannerBean) {

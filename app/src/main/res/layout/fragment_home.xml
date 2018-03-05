@@ -12,6 +12,11 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"/>
 
+    <!--<View-->
+        <!--android:id="@+id/myStatusBar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="25dp"/>-->
+
     <!--?attr/actionBarSize-->
     <com.example.wellhope.mywanandroid.widget.MyToolBar
         android:id="@+id/myToolbar"
@@ -21,7 +26,6 @@
         app:contentInsetLeft="0dp"
         android:visibility="invisible"
         app:contentInsetStart="0dp"
-        android:layout_marginTop="@dimen/statusbar_view_height"
         app:layout_behavior="@string/MyToolBarBehavior"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         />

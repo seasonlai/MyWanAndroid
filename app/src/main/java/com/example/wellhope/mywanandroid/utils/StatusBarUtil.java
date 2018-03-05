@@ -462,6 +462,34 @@ public class StatusBarUtil {
     }
 
     /**
+     * 设置假状态栏的颜色
+     * 调用该方法前需调用过setTranslucentForImageView
+     * @param color
+     * @param alpha
+     */
+    public static void setTranslucentColor(Activity activity,int color ,int alpha){
+        setTranslucentColor(activity,calculateStatusColor(color,alpha));
+    }
+
+    /**
+     * 设置默认颜色
+     * @param activity
+     */
+    public static void setTranslucentColor(Activity activity){
+        setTranslucentColor(activity,Color.argb(DEFAULT_STATUS_BAR_ALPHA,0,0,0));
+    }
+
+    public static void setTranslucentColor(Activity activity,int color){
+        ViewGroup contentView =  activity.findViewById(android.R.id.content);
+        View fakeTranslucentView = contentView.findViewById(FAKE_TRANSLUCENT_VIEW_ID);
+        if (fakeTranslucentView == null) {
+            return;
+        }
+        fakeTranslucentView.setBackgroundColor(color);
+    }
+
+
+    /**
      * 为 fragment 头部是 ImageView 的设置状态栏透明
      *
      * @param activity       fragment 对应的 activity
@@ -546,6 +574,9 @@ public class StatusBarUtil {
             contentView.addView(createTranslucentStatusBarView(activity, statusBarAlpha));
         }
     }
+
+
+
 
     /**
      * 生成一个和状态栏大小相同的彩色矩形条
