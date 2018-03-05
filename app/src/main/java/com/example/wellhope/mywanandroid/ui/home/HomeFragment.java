@@ -5,17 +5,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -27,6 +26,7 @@ import com.example.wellhope.mywanandroid.base.BaseFragment;
 import com.example.wellhope.mywanandroid.bean.ArticlePageBean;
 import com.example.wellhope.mywanandroid.bean.BannerBean;
 import com.example.wellhope.mywanandroid.utils.StatusBarUtil;
+import com.example.wellhope.mywanandroid.widget.HotWordDialog;
 import com.example.wellhope.mywanandroid.widget.MyToolBar;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -56,6 +56,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     List<BannerBean> mBannerList;
     List<ArticlePageBean.ItemBean> mArticleList;
 
+    private HotWordDialog hotWordPop;
+
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
@@ -77,7 +79,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
             public void alphaChange(float val, boolean isShow) {
                 StatusBarUtil.setTranslucentColor(getActivity(),
                         ContextCompat.getColor(getContext(), R.color.colorPrimary),
-                        (int) (255-255 * val));
+                        (int) (255 - 255 * val));
             }
 
             @Override
@@ -92,9 +94,24 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         });
 
         mMyToolBar.inflateMenu(R.menu.search);
-        final SearchView searchView=mMyToolBar.findViewById(R.id.toolbar_search);
+        final SearchView searchView = mMyToolBar.findViewById(R.id.toolbar_search);
 //        final SearchView searchView = (SearchView) item.getActionView();
         searchView.setQueryHint("搜索关键词以空格隔开");
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                Toast.makeText(getActivity(),"dddddd",Toast.LENGTH_SHORT).show();
+                if (b) {
+                    hotWordPop
+                            .anchorView(view)
+                            .gravity(Gravity.BOTTOM)
+                            .show();
+                }else {
+                    hotWordPop.hide();
+                }
+            }
+        });
+
 
         mBanner_view = view.inflate(getContext(), R.layout.home_headerview, null);
         mBanner = mBanner_view.findViewById(R.id.banner);
@@ -132,6 +149,11 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
             }
         });
+
+
+        hotWordPop = new HotWordDialog(getActivity())
+                .alignCenter(false)
+                .widthScale(0.95f);
     }
 
     @Override

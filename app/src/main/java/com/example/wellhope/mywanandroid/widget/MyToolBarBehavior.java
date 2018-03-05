@@ -46,7 +46,7 @@ public class MyToolBarBehavior extends CoordinatorLayout.Behavior<View> {
     public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child,
                                @NonNull View target, int dxConsumed, int dyConsumed,
                                int dxUnconsumed, int dyUnconsumed, int type) {
-        Log.e(TAG, "onNestedScroll: child-" + child);
+//        Log.e(TAG, "onNestedScroll: child-" + child);
         if (child instanceof MyToolBar) {
             resetBarLayout(child, target);
         }
@@ -98,8 +98,8 @@ public class MyToolBarBehavior extends CoordinatorLayout.Behavior<View> {
         if (targetHeight < 0) {
             targetHeight = firstVisiableChildView.getHeight() - child.getHeight() - child.getTop();
         }
-        Log.e(TAG, "getScrollYDistance: position : " + position +
-                "  firstVisiableChildView.getTop() : ");
+//        Log.e(TAG, "getScrollYDistance: position : " + position +
+//                "  firstVisiableChildView.getTop() : ");
         return -firstVisiableChildView.getTop();
     }
 
