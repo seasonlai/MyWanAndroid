@@ -28,7 +28,7 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
 
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-        for (int i = 0; i < getItemCount(); ++i) {
+        for (int i = 0; i < state.getItemCount(); ++i) {
             View v = cachedViews.get(i);
             Rect rect = layoutPoints.get(i);
             layoutDecorated(v, rect.left, rect.top, rect.right, rect.bottom);
@@ -118,14 +118,14 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
 
         int maxTop = top;
 
-        for (int i = 0; i < getItemCount(); ++i) {
+        for (int i = 0; i < state.getItemCount(); ++i) {
             View v = recycler.getViewForPosition(i);
             addView(v);
             measureChildWithMargins(v, 0, 0);
             cachedViews.put(i, v);
         }
 
-        for (int i = 0; i < getItemCount(); ++i) {
+        for (int i = 0; i < state.getItemCount(); ++i) {
             View v = cachedViews.get(i);
 
             int w = getDecoratedMeasuredWidth(v);

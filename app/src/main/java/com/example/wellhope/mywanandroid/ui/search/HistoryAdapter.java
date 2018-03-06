@@ -15,6 +15,7 @@ import com.example.wellhope.mywanandroid.R;
 import com.example.wellhope.mywanandroid.bean.HistoryBean;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HistoryAdapter extends ArrayAdapter<HistoryBean> {
@@ -24,12 +25,16 @@ public class HistoryAdapter extends ArrayAdapter<HistoryBean> {
 
 
     public HistoryAdapter(@NonNull Context context, int resource) {
-        this(context, resource, null);
+//        this(context, resource, new ArrayList<HistoryBean>());
+        this(context, resource, Arrays.asList(new HistoryBean[]{
+                new HistoryBean("666",1234560)
+        }));
     }
 
     public HistoryAdapter(@NonNull Context context, int resource, List<HistoryBean> list) {
         super(context, resource, list);
-        mHistories = list==null?new ArrayList<HistoryBean>():list;
+
+        mHistories = list;
     }
 
     List<HistoryBean> mOriginData;
@@ -68,10 +73,24 @@ public class HistoryAdapter extends ArrayAdapter<HistoryBean> {
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                mHistories = (List<HistoryBean>) results.values;
+                List<HistoryBean> historyBeanList = (List<HistoryBean>) results.values;
+//                mHistories.removeAll(mHistories);
+//                mHistories.addAll (historyBeanList);
+                remove();
+                mHistories=historyBeanList;
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public void changeData(List<HistoryBean> histories){
+        if(mOriginData==null)
+            mOriginData =new ArrayList<>();
+        mOriginData.removeAll(mOriginData);
+        if(histories!=null){
+            mOriginData.addAll(histories);
+        }
+
     }
 
     @NonNull

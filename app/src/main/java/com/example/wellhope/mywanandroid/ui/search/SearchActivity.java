@@ -1,12 +1,14 @@
 package com.example.wellhope.mywanandroid.ui.search;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,13 +17,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
+import com.beloo.widget.chipslayoutmanager.gravity.IChildGravityResolver;
+import com.beloo.widget.chipslayoutmanager.layouter.breaker.IRowBreaker;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.wellhope.mywanandroid.R;
 import com.example.wellhope.mywanandroid.base.BaseActivity;
 import com.example.wellhope.mywanandroid.bean.HistoryBean;
 import com.example.wellhope.mywanandroid.bean.HotWordBean;
-import com.example.wellhope.mywanandroid.widget.FlowLayoutManager;
+import com.example.wellhope.mywanandroid.utils.ContextUtils;
+import com.example.wellhope.mywanandroid.utils.FlowLayoutManager;
 
 import java.util.Date;
 import java.util.List;
@@ -63,7 +69,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 //                1,StaggeredGridLayoutManager.HORIZONTAL);
         //不设置的话，图片闪烁错位，有可能有整列错位的情况。
 //        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-        mRvHotWrod.setLayoutManager(new FlowLayoutManager());//设置瀑布流管理器
+        mRvHotWrod.setLayoutManager(getLayoutManager());//设置瀑布流管理器
 //        mRvHotWrod.addItemDecoration(new GridSpacingItemDecoration(40));//边距和分割线，需要自己定义
         mRvHotWrod.setAdapter(mHotWordAdapter = new BaseQuickAdapter<HotWordBean, BaseViewHolder>(R.layout.item_hotword) {
             @Override
@@ -72,7 +78,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
             }
         });
 
-        mRvHistory.setLayoutManager(new FlowLayoutManager());//设置瀑布流管理器
+        mRvHistory.setLayoutManager(getLayoutManager());//设置瀑布流管理器
         mRvHistory.setAdapter(mHistoryAdapter = new BaseQuickAdapter<HistoryBean, BaseViewHolder>(R.layout.item_hotword) {
             @Override
             protected void convert(BaseViewHolder helper, HistoryBean item) {
@@ -80,6 +86,39 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
             }
         });
 
+    }
+
+    private ChipsLayoutManager getLayoutManager(){
+        return ChipsLayoutManager.newBuilder(this)
+                //set vertical gravity for all items in a row. Default = Gravity.CENTER_VERTICAL
+                .setChildGravity(Gravity.TOP)
+                //whether RecyclerView can scroll. TRUE by default
+                .setScrollingEnabled(true)
+                //set maximum views count in a particular row
+//                .setMaxViewsInRow(2)
+                //set gravity resolver where you can determine gravity for item in position.
+                //This method have priority over previous one
+                .setGravityResolver(new IChildGravityResolver() {
+                    @Override
+                    public int getItemGravity(int position) {
+                        return Gravity.CENTER;
+                    }
+                })
+                //you are able to break row due to your conditions. Row breaker should return true for that views
+//                .setRowBreaker(new IRowBreaker() {
+//                    @Override
+//                    public boolean isItemBreakRow(@IntRange(from = 0) int position) {
+//                        return position == 6 || position == 11 || position == 2;
+//                    }
+//                })
+                //a layoutOrientation of layout manager, could be VERTICAL OR HORIZONTAL. HORIZONTAL by default
+                .setOrientation(ChipsLayoutManager.HORIZONTAL)
+                // row strategy for views in completed row, could be STRATEGY_DEFAULT, STRATEGY_FILL_VIEW,
+                //STRATEGY_FILL_SPACE or STRATEGY_CENTER
+                .setRowStrategy(ChipsLayoutManager.STRATEGY_DEFAULT)
+                // whether strategy is applied to last row. FALSE by default
+                .withLastRow(true)
+                .build();
     }
 
     @Override
@@ -113,10 +152,12 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
             }
         });
 
-//        SearchView.SearchAutoComplete searchSrcView = searchView.findViewById(R.id.search_src_text);
-//        searchSrcView.setThreshold(0);
-//        searchSrcView.setAdapter(mHistoryTipAdapter = new HistoryAdapter(this,
-//                R.layout.item_history_tip, null));
+        SearchView.SearchAutoComplete searchSrcView = searchView.findViewById(R.id.search_src_text);
+        searchSrcView.setTextSize(14);
+        searchSrcView.setThreshold(0);
+        searchSrcView.setGravity(Gravity.CENTER_VERTICAL);
+        searchSrcView.setAdapter(mHistoryTipAdapter==null?mHistoryTipAdapter = new HistoryAdapter(this,
+                R.layout.item_history_tip):mHistoryTipAdapter);
         return true;
     }
 
@@ -143,7 +184,12 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 //        }
         Toast.makeText(this,"histories size:"+histories.size(),Toast.LENGTH_SHORT).show();
         mHistoryAdapter.addData(histories);
+        if(mHistoryTipAdapter==null){
+            mHistoryTipAdapter=new HistoryAdapter(this,R.layout.item_history_tip);
+        }
+        mHistoryTipAdapter.changeData(histories);
     }
+
 
     @Override
     public void loadHotWord(List<HotWordBean> hotWords) {
