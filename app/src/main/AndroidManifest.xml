@@ -28,7 +28,9 @@
         <activity
             android:name=".ui.home.ArticleActivity"
             android:label="@string/title_activity_article"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.search.SearchActivity"
+            android:windowSoftInputMode="adjustNothing"/>
     </application>
 
 </manifest>

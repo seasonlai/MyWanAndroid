@@ -4,6 +4,8 @@ import com.example.wellhope.mywanandroid.ui.home.ArticleActivity;
 import com.example.wellhope.mywanandroid.ui.home.ArticleContract;
 import com.example.wellhope.mywanandroid.ui.home.HomeContract;
 import com.example.wellhope.mywanandroid.ui.home.HomeFragment;
+import com.example.wellhope.mywanandroid.ui.search.SearchActivity;
+import com.example.wellhope.mywanandroid.ui.search.SearchContract;
 
 import dagger.Binds;
 import dagger.Module;
@@ -18,4 +20,6 @@ public abstract class ViewModule {
     abstract HomeContract.View homeView(HomeFragment fragment);
     @Binds
     abstract ArticleContract.View articleView(ArticleActivity activity);
+    @Binds
+    abstract SearchContract.View searchView(SearchActivity activity);
 }

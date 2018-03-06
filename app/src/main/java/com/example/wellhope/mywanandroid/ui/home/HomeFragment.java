@@ -2,6 +2,7 @@ package com.example.wellhope.mywanandroid.ui.home;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -25,6 +26,7 @@ import com.example.wellhope.mywanandroid.R;
 import com.example.wellhope.mywanandroid.base.BaseFragment;
 import com.example.wellhope.mywanandroid.bean.ArticlePageBean;
 import com.example.wellhope.mywanandroid.bean.BannerBean;
+import com.example.wellhope.mywanandroid.ui.search.SearchActivity;
 import com.example.wellhope.mywanandroid.utils.StatusBarUtil;
 import com.example.wellhope.mywanandroid.widget.HotWordDialog;
 import com.example.wellhope.mywanandroid.widget.MyToolBar;
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class HomeFragment extends BaseFragment<HomePresenter> implements HomeContract.View {
 
@@ -56,8 +59,6 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     List<BannerBean> mBannerList;
     List<ArticlePageBean.ItemBean> mArticleList;
 
-    private HotWordDialog hotWordPop;
-
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
@@ -73,7 +74,6 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
         StatusBarUtil.setTranslucentForImageView(getActivity(),
                 mMyToolBar);
-
         mMyToolBar.setAlphaChangeListener(new MyToolBar.AlphaChangeListener() {
             @Override
             public void alphaChange(float val, boolean isShow) {
@@ -89,25 +89,6 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
                             ContextCompat.getColor(getContext(), R.color.colorPrimary), 0);
                 } else {
                     StatusBarUtil.setTranslucentColor(getActivity());
-                }
-            }
-        });
-
-        mMyToolBar.inflateMenu(R.menu.search);
-        final SearchView searchView = mMyToolBar.findViewById(R.id.toolbar_search);
-//        final SearchView searchView = (SearchView) item.getActionView();
-        searchView.setQueryHint("搜索关键词以空格隔开");
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                Toast.makeText(getActivity(),"dddddd",Toast.LENGTH_SHORT).show();
-                if (b) {
-                    hotWordPop
-                            .anchorView(view)
-                            .gravity(Gravity.BOTTOM)
-                            .show();
-                }else {
-                    hotWordPop.hide();
                 }
             }
         });
@@ -150,22 +131,12 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
             }
         });
 
-
-        hotWordPop = new HotWordDialog(getActivity())
-                .alignCenter(false)
-                .widthScale(0.95f);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        inflater.inflate(R.menu.search,menu);
-//        MenuItem item = menu.findItem(R.id.toolbar_search);
-//        final SearchView searchView = (SearchView) item.getActionView();
-//        searchView.setQueryHint("搜索关键词以空格隔开");
-//        super.onCreateOptionsMenu(menu, inflater);
-    }
 
-    private void bannerToRead(BannerBean bannerBean) {
+    @OnClick(R.id.iv_search)
+    public void search() {
+        getActivity().startActivity(new Intent(getContext(), SearchActivity.class));
     }
 
     @Override

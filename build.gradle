@@ -52,4 +52,7 @@ ext {
     converterGsonVersion = '2.1.0'
     converterScalarsVersion = '2.1.0'
     adapterRxjava2Version = '2.2.0'
+
+    //db
+    litepalVersion = '1.5.1'
 }

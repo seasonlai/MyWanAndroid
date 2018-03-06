@@ -34,15 +34,22 @@ public class RetrofitConfig {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
+            Response response;
             if(!NetUtil.isNetworkAvailable(MyApp.getContext())){
                 request = request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build();
                 Log.e(TAG, "network is not available");
-            }else {
-
-
+                response = chain.proceed(request);
+                return response.newBuilder()
+                        .header("Cache-Control", CACHE_CONTROL_CACHE)
+                        .removeHeader("Pragma")
+                        .build();
             }
 
-            return null;
+            response = chain.proceed(request);
+            return response.newBuilder()
+                    .header("Cache-Control", request.cacheControl().toString())
+                    .removeHeader("Pragma")
+                    .build();
         }
     };
 
