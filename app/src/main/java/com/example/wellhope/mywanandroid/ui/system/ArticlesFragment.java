@@ -26,7 +26,7 @@ public class ArticlesFragment extends BaseFragment {
         return R.layout.fragment_articles;
     }
 
-    @BindView(R.id.webView)
+    @BindView(R.id.webview_articles)
     WebView mWebView;
 
     @BindView(R.id.pb_progress)
