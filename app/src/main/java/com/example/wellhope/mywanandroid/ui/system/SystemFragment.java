@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.example.wellhope.mywanandroid.R;
 import com.example.wellhope.mywanandroid.base.BaseFragment;
 import com.example.wellhope.mywanandroid.base.SupportFragment;
 import com.example.wellhope.mywanandroid.bean.SystemBean;
+import com.example.wellhope.mywanandroid.utils.StatusBarUtil;
 import com.example.wellhope.mywanandroid.widget.CustomViewPager;
 
 import java.util.List;
@@ -41,6 +43,9 @@ public class SystemFragment extends BaseFragment<SystemPresenter> implements Sys
     @BindView(R.id.slidingTabLayout)
     com.flyco.tablayout.SlidingTabLayout slidingTabLayout;
 
+    @BindView(R.id.drawerLayout)
+    DrawerLayout mDrawerLayout;
+
     SystemAdapter mSystemAdapter;
 
     int curFirstKind;
@@ -52,6 +57,11 @@ public class SystemFragment extends BaseFragment<SystemPresenter> implements Sys
 
     @Override
     protected void viewCreated(View view, @Nullable Bundle savedInstanceState) {
+//        StatusBarUtil.setTranslucentForImageViewInFragment(getActivity(),slidingTabLayout);
+        StatusBarUtil.setColorForDrawerLayout(getActivity(),mDrawerLayout,
+                ContextCompat.getColor(getContext(),R.color.colorPrimary));
+        StatusBarUtil.setTranslucentColor(getActivity(),ContextCompat.getColor(getContext(),
+                R.color.colorPrimary));
         mRvKind.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         mRvKind.setAdapter(mRvAdapter = new BaseQuickAdapter<SystemBean, BaseViewHolder>(R.layout.item_system_kind) {
@@ -73,8 +83,12 @@ public class SystemFragment extends BaseFragment<SystemPresenter> implements Sys
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (position != curFirstKind) {
                     loadSecondKind(((SystemBean) adapter.getItem(position)).getChildren());
+                    mRvAdapter.notifyItemChanged(position);
+                    mRvAdapter.setNotDoAnimationCount(curFirstKind);
+                    mRvAdapter.notifyItemChanged(curFirstKind);
                     curFirstKind = position;
                 }
+
             }
         });
     }
