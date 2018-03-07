@@ -4,11 +4,13 @@ import com.example.wellhope.mywanandroid.bean.ArticlePageBean;
 import com.example.wellhope.mywanandroid.bean.BannerBean;
 import com.example.wellhope.mywanandroid.bean.HotWordBean;
 import com.example.wellhope.mywanandroid.bean.MsgBean;
+import com.example.wellhope.mywanandroid.bean.SystemBean;
 
 import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -27,5 +29,9 @@ public interface WanAndroidApi {
 
     @GET("/hotkey/json")
     Observable<MsgBean<List<HotWordBean>>> getHotWord();
+
+
+    @GET("/tree/json")
+    Observable<MsgBean<List<SystemBean>>> getSystem();
 
 }

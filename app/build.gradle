@@ -47,6 +47,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.converterGsonVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.adapterRxjava2Version"
     implementation "com.flyco.dialog:FlycoDialog_Lib:$rootProject.flycoDialogVersion"
+    implementation "com.flyco.tablayout:FlycoTabLayout_Lib:$rootProject.flycoTabVersion"
     implementation "org.litepal.android:core:$rootProject.litepalVersion"
     implementation "com.beloo.widget:ChipsLayoutManager:$rootProject.chipsLayoutVersion"
 

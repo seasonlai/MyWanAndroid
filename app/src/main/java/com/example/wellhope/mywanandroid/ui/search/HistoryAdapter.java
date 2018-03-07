@@ -3,6 +3,7 @@ package com.example.wellhope.mywanandroid.ui.search;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,29 +16,25 @@ import com.example.wellhope.mywanandroid.R;
 import com.example.wellhope.mywanandroid.bean.HistoryBean;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class HistoryAdapter extends ArrayAdapter<HistoryBean> {
 
 
-    public List<HistoryBean> mHistories;
+    List<HistoryBean> mOriginData;
+    public static final String TAG = HistoryAdapter.class.getSimpleName();
 
 
     public HistoryAdapter(@NonNull Context context, int resource) {
 //        this(context, resource, new ArrayList<HistoryBean>());
-        this(context, resource, Arrays.asList(new HistoryBean[]{
-                new HistoryBean("666",1234560)
-        }));
+        this(context, resource, new ArrayList<HistoryBean>());
     }
 
     public HistoryAdapter(@NonNull Context context, int resource, List<HistoryBean> list) {
         super(context, resource, list);
-
-        mHistories = list;
+        mOriginData = new ArrayList<>(list);
     }
 
-    List<HistoryBean> mOriginData;
 
     @NonNull
     @Override
@@ -47,10 +44,6 @@ public class HistoryAdapter extends ArrayAdapter<HistoryBean> {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
-                if (mOriginData == null) {
-                    //保存一份未筛选前的完整数据
-                    mOriginData = new ArrayList<>(mHistories);
-                }
                 if (constraint == null || constraint.length() == 0) {
                     //如果接收到的文字为空，则不作比较，直接返回未筛选前的完整数据
                     results.count = mOriginData.size();
@@ -59,8 +52,7 @@ public class HistoryAdapter extends ArrayAdapter<HistoryBean> {
                     List<HistoryBean> filteredArrList = new ArrayList<>();
                     //遍历原始数据，与接收到的文字作比较，得到筛选结果
                     constraint = constraint.toString().toLowerCase();
-                    for (int i = 0; i < mHistories.size(); i++) {
-                        HistoryBean data = mHistories.get(i);
+                    for (HistoryBean data : mOriginData) {
                         if (data.getHistoryContent().toLowerCase().startsWith(constraint.toString())) {
                             filteredArrList.add(data);
                         }
@@ -74,20 +66,20 @@ public class HistoryAdapter extends ArrayAdapter<HistoryBean> {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 List<HistoryBean> historyBeanList = (List<HistoryBean>) results.values;
-//                mHistories.removeAll(mHistories);
-//                mHistories.addAll (historyBeanList);
-                remove();
-                mHistories=historyBeanList;
-                notifyDataSetChanged();
+                Log.e(TAG, "publishResults: size :" + historyBeanList.size());
+                setNotifyOnChange(false);
+                clear();
+                setNotifyOnChange(true);
+                addAll(historyBeanList);
             }
         };
     }
 
-    public void changeData(List<HistoryBean> histories){
-        if(mOriginData==null)
-            mOriginData =new ArrayList<>();
-        mOriginData.removeAll(mOriginData);
-        if(histories!=null){
+    public void changeData(List<HistoryBean> histories) {
+        if (mOriginData == null)
+            mOriginData = new ArrayList<>();
+        mOriginData.clear();
+        if (histories != null) {
             mOriginData.addAll(histories);
         }
 
@@ -107,31 +99,72 @@ public class HistoryAdapter extends ArrayAdapter<HistoryBean> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.setItem(item);
+        holder.setContent(item,position);
         return convertView;
     }
 
-    static class ViewHolder {
+    public void deletHistory(HistoryBean historyBean) {
+        mOriginData.remove(historyBean);
+        remove(historyBean);
+    }
+
+    public void addHistory(HistoryBean historyBean) {
+        mOriginData.add(historyBean);
+    }
+
+
+    class ViewHolder {
         TextView tv;
         ImageButton ib;
-        private HistoryBean bean;
 
-        public ViewHolder(TextView tv, ImageButton ib) {
+        ViewHolder(TextView tv, ImageButton ib) {
             this.tv = tv;
             this.ib = ib;
-            ib.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-//                    ViewHolder.this.bean;
-                }
-            });
+            this.tv.setOnClickListener(HistoryAdapter.this.getOnClickListener());
+            this.ib.setOnClickListener(HistoryAdapter.this.getOnClickListener());
         }
 
-        public void setItem(HistoryBean bean) {
-            if (bean == null)
-                return;
-            tv.setText(bean.getHistoryContent());
-            this.bean = bean;
+        void setContent(HistoryBean bean, int position) {
+            this.tv.setTag(position);
+            this.ib.setTag(position);
+            this.tv.setText(bean.getHistoryContent());
         }
+
     }
+
+    private OnClickListener mOnClickListener;
+
+    public void setOnClickListener(OnClickListener onClickListener) {
+        mOnClickListener = onClickListener;
+    }
+
+    interface OnClickListener {
+
+        void textClick(HistoryBean bean);
+
+        void delClick(HistoryBean bean);
+    }
+
+    private View.OnClickListener myClickListener;
+
+    private View.OnClickListener getOnClickListener() {
+        if (myClickListener == null) {
+            myClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int p = (int) view.getTag();
+                    if (mOnClickListener != null) {
+                        if (view instanceof ImageButton) {
+                            mOnClickListener.delClick(getItem(p));
+                        } else if (view instanceof TextView) {
+                            mOnClickListener.textClick(getItem(p));
+                        }
+                    }
+                }
+            };
+        }
+        return myClickListener;
+    }
+
+
 }

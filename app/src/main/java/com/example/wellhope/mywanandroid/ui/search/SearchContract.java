@@ -15,9 +15,11 @@ public class SearchContract {
     public interface View extends BaseView {
         void loadHistory(List<HistoryBean> histories);
 
-        void loadHotWord(List<HotWordBean> hotWords);
-
         void saveHistory(HistoryBean historyBean, boolean success);
+
+        void deleteHistory(HistoryBean historyBean);
+
+        void loadHotWord(List<HotWordBean> hotWords);
     }
 
     public interface Presenter {
@@ -29,5 +31,8 @@ public class SearchContract {
         void saveHistory(HistoryBean history);
 
         void deleteHistory(HistoryBean history);
+
+        void search(String content);
+
     }
 }

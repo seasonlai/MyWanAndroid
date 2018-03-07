@@ -32,4 +32,22 @@ public class HistoryBean extends DataSupport {
     public void setHistoryDate(long historyDate) {
         this.historyDate = historyDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HistoryBean bean = (HistoryBean) o;
+
+        if (historyDate != bean.historyDate) return false;
+        return historyContent.equals(bean.historyContent);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = historyContent.hashCode();
+        result = 31 * result + (int) (historyDate ^ (historyDate >>> 32));
+        return result;
+    }
 }

@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import com.example.wellhope.mywanandroid.base.BaseActivity;
 import com.example.wellhope.mywanandroid.base.SupportFragment;
 import com.example.wellhope.mywanandroid.ui.home.HomeFragment;
+import com.example.wellhope.mywanandroid.ui.system.SystemFragment;
 import com.example.wellhope.mywanandroid.utils.StatusBarUtil;
 import com.example.wellhope.mywanandroid.widget.BottomBar;
 
@@ -20,7 +21,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.bottomBar)
     BottomBar bottomBar;
 
-    SupportFragment[] mFragments = new SupportFragment[1];
+    SupportFragment[] mFragments = new SupportFragment[2];
 
     @Override
     protected int getContentLayout() {
@@ -38,17 +39,33 @@ public class MainActivity extends BaseActivity {
 
         if(savedInstanceState==null){
             mFragments[0] = HomeFragment.newInstance();
-
+            mFragments[1] = SystemFragment.newInstance();
             getSupportDelegate().loadMultipleRootFragment(R.id.contentContainer,0,mFragments);
         }else {
             mFragments[0] = findFragment(HomeFragment.class);
-
+            mFragments[1] = findFragment(SystemFragment.class);
         }
 
         bottomBar.addItem(this, R.drawable.ic_home, "首页")
                 .addItem(this, R.drawable.ic_system, "知识体系")
                 .addItem(this, R.drawable.ic_person, "我的");
 
+        bottomBar.setTabSelectedListener(new BottomBar.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(int position, int prePosition) {
+                showHideFragment(mFragments[position],mFragments[prePosition]);
+            }
+
+            @Override
+            public void onTabUnselected(int position) {
+
+            }
+
+            @Override
+            public void onTabReselected(int position) {
+
+            }
+        });
     }
 
 }

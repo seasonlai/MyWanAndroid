@@ -1,33 +1,28 @@
 package com.example.wellhope.mywanandroid.ui.search;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.IntRange;
+import android.content.DialogInterface;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import com.beloo.widget.chipslayoutmanager.gravity.IChildGravityResolver;
-import com.beloo.widget.chipslayoutmanager.layouter.breaker.IRowBreaker;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.wellhope.mywanandroid.R;
 import com.example.wellhope.mywanandroid.base.BaseActivity;
 import com.example.wellhope.mywanandroid.bean.HistoryBean;
 import com.example.wellhope.mywanandroid.bean.HotWordBean;
-import com.example.wellhope.mywanandroid.utils.ContextUtils;
-import com.example.wellhope.mywanandroid.utils.FlowLayoutManager;
 
 import java.util.Date;
 import java.util.List;
@@ -85,10 +80,34 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
                 helper.setText(R.id.tv_hotword, item.getHistoryContent());
             }
         });
+        mHistoryAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                HistoryBean item = (HistoryBean) adapter.getItem(position);
+                mPesenter.search(item.getHistoryContent());
+            }
+        });
 
+        mHistoryAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(final BaseQuickAdapter adapter, View view, final int position) {
+
+                new AlertDialog.Builder(SearchActivity.this)
+                        .setTitle("确定删除改历史记录？")
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mPesenter.deleteHistory((HistoryBean)adapter.getItem(position));
+                            }
+                        })
+                        .setNegativeButton("否",null)
+                        .show();
+                return true;
+            }
+        });
     }
 
-    private ChipsLayoutManager getLayoutManager(){
+    private ChipsLayoutManager getLayoutManager() {
         return ChipsLayoutManager.newBuilder(this)
                 //set vertical gravity for all items in a row. Default = Gravity.CENTER_VERTICAL
                 .setChildGravity(Gravity.TOP)
@@ -151,13 +170,46 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
                 return false;
             }
         });
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionSelect(int position) {
+
+                Toast.makeText(SearchActivity.this, "onSuggestionSelect: " + position, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            @Override
+            public boolean onSuggestionClick(int position) {
+                Toast.makeText(SearchActivity.this, "onSuggestionClick: " + position, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
 
         SearchView.SearchAutoComplete searchSrcView = searchView.findViewById(R.id.search_src_text);
-        searchSrcView.setTextSize(14);
+        searchSrcView.setTextSize(15);
         searchSrcView.setThreshold(0);
         searchSrcView.setGravity(Gravity.CENTER_VERTICAL);
-        searchSrcView.setAdapter(mHistoryTipAdapter==null?mHistoryTipAdapter = new HistoryAdapter(this,
-                R.layout.item_history_tip):mHistoryTipAdapter);
+//        searchSrcView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//            }
+//        });
+        searchSrcView.setAdapter(mHistoryTipAdapter == null ? mHistoryTipAdapter = new HistoryAdapter(this,
+                R.layout.item_history_tip) : mHistoryTipAdapter);
+
+        mHistoryTipAdapter.setOnClickListener(new HistoryAdapter.OnClickListener() {
+            @Override
+            public void textClick(HistoryBean bean) {
+                mPesenter.search(bean.getHistoryContent());
+            }
+
+            @Override
+            public void delClick(HistoryBean bean) {
+                mPesenter.deleteHistory(bean);
+            }
+        });
+
         return true;
     }
 
@@ -168,24 +220,10 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
     @Override
     public void loadHistory(List<HistoryBean> histories) {
-//        for (HistoryBean history:histories){
-//            View inflate = LayoutInflater.from(this).inflate(R.layout.item_hotword, null);
-//            TextView tv = inflate.findViewById(R.id.tv_hotword);
-//            tv.setText(history.getHistoryContent());
-//            tv.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View view) {
-//                    Toast.makeText(SearchActivity.this,"删除"
-//                            ,Toast.LENGTH_SHORT).show();
-//                    return true;
-//                }
-//            });
-//            mRvHistory.addView(inflate);
-//        }
-        Toast.makeText(this,"histories size:"+histories.size(),Toast.LENGTH_SHORT).show();
+        mHistoryAdapter.getData().clear();
         mHistoryAdapter.addData(histories);
-        if(mHistoryTipAdapter==null){
-            mHistoryTipAdapter=new HistoryAdapter(this,R.layout.item_history_tip);
+        if (mHistoryTipAdapter == null) {
+            mHistoryTipAdapter = new HistoryAdapter(this, R.layout.item_history_tip);
         }
         mHistoryTipAdapter.changeData(histories);
     }
@@ -201,8 +239,17 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 //        mRvHistory.addView();
         if (success) {
             mHistoryAdapter.addData(0, historyBean);
-//            mHistoryTipAdapter.add(historyBean);
+            mHistoryTipAdapter.addHistory(historyBean);
         }
+    }
+
+    @Override
+    public void deleteHistory(HistoryBean historyBean) {
+        for (int i = 0; i < mHistoryAdapter.getItemCount(); i++) {
+            if (historyBean.equals(mHistoryAdapter.getItem(i)))
+                mHistoryAdapter.remove(i);
+        }
+        mHistoryTipAdapter.deletHistory(historyBean);
     }
 
 }
