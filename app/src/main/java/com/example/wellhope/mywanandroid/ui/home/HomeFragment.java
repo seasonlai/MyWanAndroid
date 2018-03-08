@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -26,6 +27,10 @@ import com.example.wellhope.mywanandroid.R;
 import com.example.wellhope.mywanandroid.base.BaseFragment;
 import com.example.wellhope.mywanandroid.bean.ArticlePageBean;
 import com.example.wellhope.mywanandroid.bean.BannerBean;
+import com.example.wellhope.mywanandroid.constant.Constant;
+import com.example.wellhope.mywanandroid.event.LoginEvent;
+import com.example.wellhope.mywanandroid.event.RxBus;
+import com.example.wellhope.mywanandroid.ui.login.LoginActivity;
 import com.example.wellhope.mywanandroid.ui.search.SearchActivity;
 import com.example.wellhope.mywanandroid.utils.StatusBarUtil;
 import com.example.wellhope.mywanandroid.widget.HotWordDialog;
@@ -40,6 +45,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 
 public class HomeFragment extends BaseFragment<HomePresenter> implements HomeContract.View {
 
@@ -59,6 +65,9 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     List<BannerBean> mBannerList;
     List<ArticlePageBean.ItemBean> mArticleList;
 
+    int pageNum;
+
+
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
@@ -74,6 +83,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
         StatusBarUtil.setTranslucentForImageView(getActivity(),
                 mMyToolBar);
+        pageNum=0;
         mMyToolBar.setAlphaChangeListener(new MyToolBar.AlphaChangeListener() {
             @Override
             public void alphaChange(float val, boolean isShow) {
@@ -124,6 +134,28 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         mRecyclerView.setAdapter(mHomeAdapter = new HomeAdapter(mArticleList));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mHomeAdapter.setEnableLoadMore(true);
+        mHomeAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                if(SPUtils.getInstance(Constant.SHARED_NAME).getBoolean(Constant.LOGIN_KEY)){
+                    ArticlePageBean.ItemBean item = (ArticlePageBean.ItemBean) adapter.getItem(position);
+                    if(item.isCollect()){
+                        mPresenter.unCollectArticle(item.getId(),position+adapter.getHeaderLayoutCount());
+                    }else {
+                        mPresenter.collectArticle(item.getId(),position+adapter.getHeaderLayoutCount());
+                    }
+                }else {
+                    LoginActivity.launch(getContext());
+                }
+            }
+        });
+        mHomeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+        });
+
         mHomeAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -131,8 +163,15 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
             }
         });
 
+        RxBus.getInstance().toFlowable(LoginEvent.class)
+                .subscribe(new Consumer<LoginEvent>() {
+                    @Override
+                    public void accept(LoginEvent loginEvent) throws Exception {
+                        pageNum = 0;
+                        mPresenter.getPageArticle(pageNum);
+                    }
+                });
     }
-
 
     @OnClick(R.id.iv_search)
     public void search() {
@@ -142,7 +181,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     @Override
     protected void lazyInit() {
         this.mPresenter.getBanner();
-        this.mPresenter.getPageArticle(0);
+        this.mPresenter.getPageArticle(pageNum);
     }
 
     @Override
@@ -166,5 +205,17 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     @Override
     public void loadArticle(List<ArticlePageBean.ItemBean> articleList) {
         mHomeAdapter.addData(articleList);
+    }
+
+    @Override
+    public void collectArticle(int position) {
+        mHomeAdapter.getItem(position).setCollect(true);
+        mHomeAdapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void unCollectArticle(int position) {
+        mHomeAdapter.getItem(position).setCollect(false);
+        mHomeAdapter.notifyItemChanged(position);
     }
 }

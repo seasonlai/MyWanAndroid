@@ -17,6 +17,10 @@ android {
         }
     }
     buildToolsVersion '26.0.2'
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_7
+    }
 }
 
 dependencies {
@@ -50,5 +54,5 @@ dependencies {
     implementation "com.flyco.tablayout:FlycoTabLayout_Lib:$rootProject.flycoTabVersion"
     implementation "org.litepal.android:core:$rootProject.litepalVersion"
     implementation "com.beloo.widget:ChipsLayoutManager:$rootProject.chipsLayoutVersion"
-
+    implementation "com.blankj:utilcode:$rootProject.utilcodeVersion"
 }

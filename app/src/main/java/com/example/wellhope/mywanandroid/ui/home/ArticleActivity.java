@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -18,7 +16,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.wellhope.mywanandroid.R;
 import com.example.wellhope.mywanandroid.base.BaseActivity;
@@ -101,7 +98,7 @@ public class ArticleActivity extends BaseActivity<ArticlePresenter> implements A
     protected void loadData() {
         Intent intent = getIntent();
         Parcelable article = intent.getParcelableExtra(ARTICLE);
-        this.mPesenter.loadData(article);
+        this.mPresenter.loadData(article);
     }
 
     @Override

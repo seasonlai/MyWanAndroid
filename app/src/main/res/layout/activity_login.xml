@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.wellhope.mywanandroid.ui.login.LoginActivity">
+
+    <ImageView
+        android:id="@+id/headView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/head_login" />
+
+    <EditText
+        android:id="@+id/userName"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/headView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:hint="用户名" />
+
+    <EditText
+        android:id="@+id/password"
+        android:inputType="textPassword"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:hint="密码" />
+
+    <EditText
+        android:id="@+id/password2"
+        android:inputType="textPassword"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:hint="重输密码"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/switchMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/password"
+        android:layout_below="@+id/password2"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:text="注册"
+        android:textColor="@android:color/holo_blue_light" />
+
+    <TextView
+        android:id="@+id/loginOrRegister"
+        android:layout_width="120dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/switchMode"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:background="@android:color/holo_green_dark"
+        android:gravity="center"
+        android:text="登录"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+</RelativeLayout>

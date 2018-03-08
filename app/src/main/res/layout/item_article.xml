@@ -20,13 +20,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <!--<ImageView-->
+        <!--android:id="@+id/article_head"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:srcCompat="@drawable/fragmentation_help" />-->
+    <TextView
         android:id="@+id/article_head"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="作者: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/fragmentation_help" />
@@ -72,15 +83,16 @@
 
     <ImageView
         android:id="@+id/article_favorite"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:padding="@dimen/dp_4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2"
-        app:srcCompat="@drawable/gray_radius"
+        app:srcCompat="@drawable/ic_favor_def"
         android:layout_marginRight="8dp" />
 
     <android.support.constraint.Guideline

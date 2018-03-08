@@ -1,8 +1,12 @@
 package com.example.wellhope.mywanandroid;
 
 import android.app.Application;
+import android.support.v4.content.ContextCompat;
 
 
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
+import com.blankj.utilcode.util.Utils;
 import com.example.wellhope.mywanandroid.di.DaggerAppComponent;
 
 import org.litepal.LitePal;
@@ -25,7 +29,11 @@ public class MyApp extends DaggerApplication {
     public void onCreate() {
         super.onCreate();
         LitePal.initialize(this);
+        Utils.init(this);
         mContext = this;
+
+        ToastUtils.setBgColor(ContextCompat.getColor(this,R.color.toast_bg));
+        ToastUtils.setMsgColor(ContextCompat.getColor(this,R.color.toast_txt));
     }
 
     public static Application getContext() {

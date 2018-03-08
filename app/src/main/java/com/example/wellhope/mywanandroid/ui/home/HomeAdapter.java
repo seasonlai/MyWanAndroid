@@ -1,6 +1,7 @@
 package com.example.wellhope.mywanandroid.ui.home;
 
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -15,6 +16,8 @@ import java.util.List;
 
 public class HomeAdapter extends BaseQuickAdapter<ArticlePageBean.ItemBean,BaseViewHolder>{
 
+    private View.OnClickListener mClickListener;
+
     public HomeAdapter(@Nullable List<ArticlePageBean.ItemBean> data) {
         super(R.layout.item_article,data);
     }
@@ -24,5 +27,19 @@ public class HomeAdapter extends BaseQuickAdapter<ArticlePageBean.ItemBean,BaseV
         helper.setText(R.id.article_author,item.getAuthor());
         helper.setText(R.id.article_title,item.getTitle());
         helper.setText(R.id.article_chapter,item.getChapterName());
+        helper.setImageResource(R.id.article_favorite,item.isCollect()?
+                R.drawable.ic_favor_sel:R.drawable.ic_favor_def);
+        helper.addOnClickListener(R.id.article_favorite);
     }
+
+//    public View.OnClickListener getClickListener() {
+//        if(mClickListener==null)
+//            mClickListener=new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                }
+//            };
+//        return mClickListener;
+//    }
 }

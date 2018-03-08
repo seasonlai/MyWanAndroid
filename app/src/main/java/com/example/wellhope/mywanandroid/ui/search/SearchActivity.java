@@ -84,7 +84,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 HistoryBean item = (HistoryBean) adapter.getItem(position);
-                mPesenter.search(item.getHistoryContent());
+                mPresenter.search(item.getHistoryContent());
             }
         });
 
@@ -97,7 +97,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
                         .setPositiveButton("是", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mPesenter.deleteHistory((HistoryBean)adapter.getItem(position));
+                                mPresenter.deleteHistory((HistoryBean)adapter.getItem(position));
                             }
                         })
                         .setNegativeButton("否",null)
@@ -142,8 +142,8 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
     @Override
     protected void loadData() {
-        this.mPesenter.getHistory();
-        this.mPesenter.getHotWord();
+        this.mPresenter.getHistory();
+        this.mPresenter.getHotWord();
     }
 
     @SuppressLint("RestrictedApi")
@@ -160,7 +160,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //保存历史记录
-                SearchActivity.this.mPesenter.saveHistory(
+                SearchActivity.this.mPresenter.saveHistory(
                         new HistoryBean(query, new Date().getTime()));
                 return true;
             }
@@ -201,12 +201,12 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         mHistoryTipAdapter.setOnClickListener(new HistoryAdapter.OnClickListener() {
             @Override
             public void textClick(HistoryBean bean) {
-                mPesenter.search(bean.getHistoryContent());
+                mPresenter.search(bean.getHistoryContent());
             }
 
             @Override
             public void delClick(HistoryBean bean) {
-                mPesenter.deleteHistory(bean);
+                mPresenter.deleteHistory(bean);
             }
         });
 

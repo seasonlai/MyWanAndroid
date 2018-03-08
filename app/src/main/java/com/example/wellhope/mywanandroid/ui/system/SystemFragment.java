@@ -57,13 +57,13 @@ public class SystemFragment extends BaseFragment<SystemPresenter> implements Sys
 
     @Override
     protected void viewCreated(View view, @Nullable Bundle savedInstanceState) {
-//        StatusBarUtil.setTranslucentForImageViewInFragment(getActivity(),slidingTabLayout);
-        StatusBarUtil.setColorForDrawerLayout(getActivity(),mDrawerLayout,
-                ContextCompat.getColor(getContext(),R.color.colorPrimary));
-        StatusBarUtil.setTranslucentColor(getActivity(),ContextCompat.getColor(getContext(),
-                R.color.colorPrimary));
+        StatusBarUtil.setTranslucentColor(getActivity(),ContextCompat.getColor(getContext(),R.color.colorPrimary));
+//        StatusBarUtil.offsetView(getActivity(),slidingTabLayout);
+        StatusBarUtil.offsetView(getActivity(),mDrawerLayout);
         mRvKind.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
+//        StatusBarUtil.setColorForDrawerLayout(getActivity(),mDrawerLayout,
+//                ContextCompat.getColor(getContext(),R.color.colorPrimary));
         mRvKind.setAdapter(mRvAdapter = new BaseQuickAdapter<SystemBean, BaseViewHolder>(R.layout.item_system_kind) {
 
             @Override

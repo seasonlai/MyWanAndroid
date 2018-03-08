@@ -48,6 +48,9 @@ ext {
     flycoTabVersion = '2.1.2@aar'
     chipsLayoutVersion = '0.3.7@aar'
 
+    //util
+    utilcodeVersion = '1.9.6'
+
 
     //http
     retrofit2Version = '2.1.0'

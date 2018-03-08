@@ -11,7 +11,10 @@ import java.util.List;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
@@ -25,7 +28,7 @@ public interface WanAndroidApi {
 
 
     @GET("/article/list/{num}/json")
-    Observable<MsgBean<ArticlePageBean>> getPageArticle(@Path("num") Integer num);
+    Observable<MsgBean<ArticlePageBean>> getPageArticle(@Path("num") int num);
 
     @GET("/hotkey/json")
     Observable<MsgBean<List<HotWordBean>>> getHotWord();
@@ -34,4 +37,17 @@ public interface WanAndroidApi {
     @GET("/tree/json")
     Observable<MsgBean<List<SystemBean>>> getSystem();
 
+    @POST("/lg/collect/{id}/json")
+    Observable<MsgBean> collectArticle(@Path("id")int id);
+
+    @POST("/lg/uncollect_originId/{id}/json")
+    Observable<MsgBean> unCollectArticle(@Path("id")int id);
+
+    @POST("/user/login")
+    @FormUrlEncoded
+    Observable<MsgBean> login(@Field("username") String userName, @Field("password")String pwd);
+
+    @POST("/user/register")
+    @FormUrlEncoded
+    Observable<MsgBean> register(@Field("username") String userName, @Field("password")String pwd, @Field("repassword")String repwd);
 }

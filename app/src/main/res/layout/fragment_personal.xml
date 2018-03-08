@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.wellhope.mywanandroid.ui.personal.PersonalFragment">
+
+    <ImageView
+        android:id="@+id/headBg"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/ic_personal_bg"/>
+
+    <ImageView
+        android:id="@+id/headView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="210dp"
+        app:srcCompat="@drawable/head_def"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/headView"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp"
+        android:layout_alignBottom="@+id/headBg"
+        android:text="登录/注册"/>
+
+    <LinearLayout
+        android:id="@+id/myFavor"
+        android:layout_below="@+id/headView"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/dp_4"
+        android:paddingRight="@dimen/dp_4"
+        android:layout_height="36dp">
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_star"/>
+
+        <TextView
+            android:layout_marginLeft="@dimen/dp_4"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:text="我的收藏"/>
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_arrow_right"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

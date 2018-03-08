@@ -87,4 +87,52 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
                     }
                 });
     }
+
+    @Override
+    public void collectArticle(int id, final int position) {
+        wanAndroidApi.collectArticle(id)
+                .compose(RxSchedulers.<MsgBean>switchSchedulers())
+                .map(new Function<MsgBean, Boolean>() {
+                    @Override
+                    public Boolean apply(MsgBean msgBean) throws Exception {
+                        return msgBean.getErrorCode()>=0;
+                    }
+                })
+                .subscribe(new BaseObserver<Boolean>() {
+                    @Override
+                    protected void success(Boolean success) {
+                        if(success){
+                            mView.collectArticle(position);
+                        }
+                    }
+                    @Override
+                    protected void fail(Throwable e) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void unCollectArticle(int id,final int position) {
+        wanAndroidApi.unCollectArticle(id)
+                .compose(RxSchedulers.<MsgBean>switchSchedulers())
+                .map(new Function<MsgBean, Boolean>() {
+                    @Override
+                    public Boolean apply(MsgBean msgBean) throws Exception {
+                        return msgBean.getErrorCode()>=0;
+                    }
+                })
+                .subscribe(new BaseObserver<Boolean>() {
+                    @Override
+                    protected void success(Boolean success) {
+                        if(success){
+                            mView.unCollectArticle(position);
+                        }
+                    }
+                    @Override
+                    protected void fail(Throwable e) {
+
+                    }
+                });
+    }
 }

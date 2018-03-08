@@ -17,7 +17,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends SupportActiv
 
     @Inject
     @Nullable
-    protected T mPesenter;
+    protected T mPresenter;
 
     Unbinder unbinder;
 

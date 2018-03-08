@@ -479,6 +479,19 @@ public class StatusBarUtil {
         setTranslucentColor(activity,Color.argb(DEFAULT_STATUS_BAR_ALPHA,0,0,0));
     }
 
+    public static void offsetView(Activity activity,View needOffsetView){
+        if (needOffsetView != null) {
+            Object haveSetOffset = needOffsetView.getTag(TAG_KEY_HAVE_SET_OFFSET);
+            if (haveSetOffset != null && (Boolean) haveSetOffset) {
+                return;
+            }
+            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) needOffsetView.getLayoutParams();
+            layoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin + getStatusBarHeight(activity),
+                    layoutParams.rightMargin, layoutParams.bottomMargin);
+            needOffsetView.setTag(TAG_KEY_HAVE_SET_OFFSET, true);
+        }
+    }
+
     public static void setTranslucentColor(Activity activity,int color){
         ViewGroup contentView =  activity.findViewById(android.R.id.content);
         View fakeTranslucentView = contentView.findViewById(FAKE_TRANSLUCENT_VIEW_ID);
@@ -487,6 +500,8 @@ public class StatusBarUtil {
         }
         fakeTranslucentView.setBackgroundColor(color);
     }
+
+
 
 
     /**
