@@ -9,6 +9,8 @@ import com.example.wellhope.mywanandroid.net.WanAndroidApi;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
@@ -25,8 +27,19 @@ public class HttpModule {
 
     OkHttpClient.Builder mBuilder;
 
+    CookiesManager mCookiesManager;
+
+    @Singleton
     @Provides
-    public OkHttpClient.Builder provideOkHttpClient(){
+    public CookiesManager provideCookiesManager(){
+        if(mCookiesManager!=null)
+            return mCookiesManager;
+        return mCookiesManager = new CookiesManager();
+    }
+
+
+    @Provides
+    public OkHttpClient.Builder provideOkHttpClient(CookiesManager cookiesManager){
         if(mBuilder!=null)
             return mBuilder;
         // 指定缓存路径,缓存大小100Mb
@@ -35,15 +48,17 @@ public class HttpModule {
         return mBuilder=new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)
                 .cache(cache)
-                .cookieJar(new CookiesManager())
+                .cookieJar(cookiesManager)
                 .addInterceptor(RetrofitConfig.sRewriteCacheInterceptor)
                 .addNetworkInterceptor(RetrofitConfig.sRewriteCacheInterceptor)
                 .connectTimeout(10, TimeUnit.SECONDS);
+
     }
 
 
     @Provides
-    public WanAndroidApi provideNetApis(OkHttpClient.Builder builder) {
+    public WanAndroidApi provideNetApis(
+            OkHttpClient.Builder builder) {
         return new Retrofit.Builder()
                 .client(builder.build())
                 .baseUrl(Constant.API_WANANDROID)

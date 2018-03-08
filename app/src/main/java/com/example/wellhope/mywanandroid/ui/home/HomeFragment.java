@@ -23,6 +23,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.example.wellhope.mywanandroid.MyApp;
 import com.example.wellhope.mywanandroid.R;
 import com.example.wellhope.mywanandroid.base.BaseFragment;
 import com.example.wellhope.mywanandroid.bean.ArticlePageBean;
@@ -137,12 +138,12 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         mHomeAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if(SPUtils.getInstance(Constant.SHARED_NAME).getBoolean(Constant.LOGIN_KEY)){
+                if(MyApp.isLogin()){
                     ArticlePageBean.ItemBean item = (ArticlePageBean.ItemBean) adapter.getItem(position);
                     if(item.isCollect()){
-                        mPresenter.unCollectArticle(item.getId(),position+adapter.getHeaderLayoutCount());
+                        mPresenter.unCollectArticle(item.getId(),position);
                     }else {
-                        mPresenter.collectArticle(item.getId(),position+adapter.getHeaderLayoutCount());
+                        mPresenter.collectArticle(item.getId(),position);
                     }
                 }else {
                     LoginActivity.launch(getContext());
@@ -194,7 +195,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         for (BannerBean bannerBean : bannerList) {
             titleList.add(bannerBean.getTitle());
             urlList.add(bannerBean.getImagePath());
-            Log.e(TAG, "loadBanner: title: " + bannerBean.getTitle() + "  url: " + bannerBean.getUrl());
+            Log.e(TAG, "loadBanner: title: " + bannerBean.getTitle()
+                    + "  url: " + bannerBean.getUrl());
         }
         mBanner.setImages(urlList);
         mBanner.setBannerTitles(titleList);
@@ -204,18 +206,20 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
     @Override
     public void loadArticle(List<ArticlePageBean.ItemBean> articleList) {
-        mHomeAdapter.addData(articleList);
+        mHomeAdapter.replaceData(articleList);
     }
 
     @Override
     public void collectArticle(int position) {
-        mHomeAdapter.getItem(position).setCollect(true);
-        mHomeAdapter.notifyItemChanged(position);
+        ArticlePageBean.ItemBean item = mHomeAdapter.getItem(position);
+        item.setCollect(true);
+        mHomeAdapter.setData(position,item);
     }
 
     @Override
     public void unCollectArticle(int position) {
-        mHomeAdapter.getItem(position).setCollect(false);
-        mHomeAdapter.notifyItemChanged(position);
+        ArticlePageBean.ItemBean item = mHomeAdapter.getItem(position);
+        item.setCollect(false);
+        mHomeAdapter.setData(position,item);
     }
 }

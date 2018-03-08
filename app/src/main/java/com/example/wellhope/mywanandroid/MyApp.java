@@ -7,15 +7,13 @@ import android.support.v4.content.ContextCompat;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.example.wellhope.mywanandroid.constant.Constant;
 import com.example.wellhope.mywanandroid.di.DaggerAppComponent;
 
 import org.litepal.LitePal;
 
-import javax.inject.Inject;
-
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
-import dagger.android.DaggerApplication_MembersInjector;
 
 /**
  * Created by Wellhope on 2018/2/9.
@@ -43,5 +41,9 @@ public class MyApp extends DaggerApplication {
     @Override
     protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
         return DaggerAppComponent.builder().create(this);
+    }
+
+    public static boolean isLogin(){
+        return SPUtils.getInstance(Constant.SHARED_NAME).getBoolean(Constant.LOGIN_KEY);
     }
 }

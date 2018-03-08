@@ -4,6 +4,7 @@ import com.example.wellhope.mywanandroid.bean.ArticlePageBean;
 import com.example.wellhope.mywanandroid.bean.BannerBean;
 import com.example.wellhope.mywanandroid.bean.HotWordBean;
 import com.example.wellhope.mywanandroid.bean.MsgBean;
+import com.example.wellhope.mywanandroid.bean.StarWebBean;
 import com.example.wellhope.mywanandroid.bean.SystemBean;
 
 import java.util.List;
@@ -33,6 +34,8 @@ public interface WanAndroidApi {
     @GET("/hotkey/json")
     Observable<MsgBean<List<HotWordBean>>> getHotWord();
 
+    @GET("/friend/json")
+    Observable<MsgBean<List<StarWebBean>>> getStarWeb();
 
     @GET("/tree/json")
     Observable<MsgBean<List<SystemBean>>> getSystem();
