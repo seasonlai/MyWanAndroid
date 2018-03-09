@@ -45,24 +45,23 @@ public class SearchActivity extends BaseActivity {
         return R.layout.activity_search;
     }
 
-    SupportFragment[] mFragments = new SupportFragment[2];
 
     @Override
     protected void bindView(@Nullable Bundle savedInstanceState) {
 //        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         subscribeEvent();
         mHistoryTipAdapter = new HistoryAdapter(this, R.layout.item_history_tip);
 
+        SearchRecommendFragment searchRecommendFragment;
         if (savedInstanceState == null) {
-            mFragments[0] = SearchRecommendFragment.newInstance();
-            mFragments[1] = SearchResultFragment.newInstance();
+            searchRecommendFragment = SearchRecommendFragment.newInstance();
         } else {
-            mFragments[0] = findFragment(SearchRecommendFragment.class);
-            mFragments[1] = findFragment(SearchResultFragment.class);
+            searchRecommendFragment = findFragment(SearchRecommendFragment.class);
         }
-
-        getSupportDelegate().loadMultipleRootFragment(R.id.search_container, 0, mFragments);
+        getSupportDelegate().loadRootFragment(R.id.search_container, searchRecommendFragment);
+//        getSupportDelegate().loadMultipleRootFragment(R.id.search_container, 0, mFragments);
     }
 
     private void subscribeEvent() {
@@ -113,7 +112,10 @@ public class SearchActivity extends BaseActivity {
     private void setSearchTxtAndSearch(String txt) {
         TextView searchSrcView = searchView.findViewById(R.id.search_src_text);
         searchSrcView.setText(txt);
-        showHideFragment(mFragments[0], mFragments[1]);
+        searchView.clearFocus();
+//        showHideFragment(mFragments[1], mFragments[0]);
+        getSupportDelegate().start(SearchResultFragment.newInstance());
+//        getSupportDelegate().start(SearchResultFragment.newInstance(txt));
         RxBus.getInstance().post(new SearchEvent(txt, true));
     }
 
@@ -131,28 +133,18 @@ public class SearchActivity extends BaseActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                getSupportDelegate().start(SearchResultFragment.newInstance(query));
                 //保存历史记录
                 RxBus.getInstance().post(new HistoryEvent.SingleEvent(
                         new HistoryBean(query, new Date().getTime()), HistoryEvent.TYPE_SAVE));
+
+                RxBus.getInstance().post(new SearchEvent(query, true));
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
-            @Override
-            public boolean onSuggestionSelect(int position) {
-
-                Toast.makeText(SearchActivity.this, "onSuggestionSelect: " + position, Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
-            @Override
-            public boolean onSuggestionClick(int position) {
-                Toast.makeText(SearchActivity.this, "onSuggestionClick: " + position, Toast.LENGTH_SHORT).show();
                 return false;
             }
         });

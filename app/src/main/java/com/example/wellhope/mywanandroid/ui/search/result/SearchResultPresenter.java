@@ -27,14 +27,18 @@ public class SearchResultPresenter extends BasePresenter<SearchResultContract.Vi
     }
 
     @Override
-    public void search(String key, int pageNum) {
+    public void search(String key, final int pageNum) {
         mApi.search(pageNum,key)
                 .compose(RxSchedulers.<MsgBean<ArticlePageBean>>switchSchedulers())
                 .map(RxSchedulers.<ArticlePageBean>mapResult())
                 .subscribe(new BaseObserver<ArticlePageBean>() {
                     @Override
                     protected void success(ArticlePageBean articlePageBean) {
-                        mView.loadResult(articlePageBean);
+                        if(pageNum==0) {
+                            mView.loadResult(articlePageBean);
+                        }else {
+                            mView.loadMoreResult(articlePageBean);
+                        }
                     }
 
                     @Override

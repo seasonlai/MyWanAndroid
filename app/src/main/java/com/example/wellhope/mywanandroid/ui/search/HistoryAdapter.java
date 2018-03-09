@@ -66,7 +66,7 @@ public class HistoryAdapter extends ArrayAdapter<HistoryBean> {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 List<HistoryBean> historyBeanList = (List<HistoryBean>) results.values;
-                Log.e(TAG, "publishResults: size :" + historyBeanList.size());
+//                Log.e(TAG, "publishResults: size :" + historyBeanList.size());
                 setNotifyOnChange(false);
                 HistoryAdapter.super.clear();
                 setNotifyOnChange(true);
