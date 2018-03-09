@@ -13,7 +13,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.wellhope.mywanandroid.R;
-import com.example.wellhope.mywanandroid.bean.HistoryBean;
+import com.example.wellhope.mywanandroid.bean.RecommendBean;
+import com.example.wellhope.mywanandroid.bean.RecommendBean.HistoryBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,6 @@ public class HistoryAdapter extends ArrayAdapter<HistoryBean> {
 
 
     public HistoryAdapter(@NonNull Context context, int resource) {
-//        this(context, resource, new ArrayList<HistoryBean>());
         this(context, resource, new ArrayList<HistoryBean>());
     }
 
@@ -68,7 +68,7 @@ public class HistoryAdapter extends ArrayAdapter<HistoryBean> {
                 List<HistoryBean> historyBeanList = (List<HistoryBean>) results.values;
                 Log.e(TAG, "publishResults: size :" + historyBeanList.size());
                 setNotifyOnChange(false);
-                clear();
+                HistoryAdapter.super.clear();
                 setNotifyOnChange(true);
                 addAll(historyBeanList);
             }
@@ -103,15 +103,22 @@ public class HistoryAdapter extends ArrayAdapter<HistoryBean> {
         return convertView;
     }
 
-    public void deletHistory(HistoryBean historyBean) {
-        mOriginData.remove(historyBean);
-        remove(historyBean);
+    @Override
+    public void remove(@Nullable HistoryBean object) {
+//        super.remove(object);
+        mOriginData.remove(object);
     }
 
-    public void addHistory(HistoryBean historyBean) {
+    @Override
+    public void add(HistoryBean historyBean) {
         mOriginData.add(historyBean);
     }
 
+    @Override
+    public void clear() {
+        super.clear();
+        mOriginData.clear();
+    }
 
     class ViewHolder {
         TextView tv;

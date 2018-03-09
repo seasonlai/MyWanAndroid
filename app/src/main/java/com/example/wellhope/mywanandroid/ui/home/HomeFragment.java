@@ -8,16 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -28,13 +22,11 @@ import com.example.wellhope.mywanandroid.R;
 import com.example.wellhope.mywanandroid.base.BaseFragment;
 import com.example.wellhope.mywanandroid.bean.ArticlePageBean;
 import com.example.wellhope.mywanandroid.bean.BannerBean;
-import com.example.wellhope.mywanandroid.constant.Constant;
 import com.example.wellhope.mywanandroid.event.LoginEvent;
 import com.example.wellhope.mywanandroid.event.RxBus;
 import com.example.wellhope.mywanandroid.ui.login.LoginActivity;
 import com.example.wellhope.mywanandroid.ui.search.SearchActivity;
 import com.example.wellhope.mywanandroid.utils.StatusBarUtil;
-import com.example.wellhope.mywanandroid.widget.HotWordDialog;
 import com.example.wellhope.mywanandroid.widget.MyToolBar;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -60,7 +52,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
     Banner mBanner;
 
-    HomeAdapter mHomeAdapter;
+    ArticleAdapter mArticleAdapter;
     View mBanner_view;
 
     List<BannerBean> mBannerList;
@@ -132,10 +124,10 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         });
         mBannerList = new ArrayList<>();
         mArticleList = new ArrayList<>();
-        mRecyclerView.setAdapter(mHomeAdapter = new HomeAdapter(mArticleList));
+        mRecyclerView.setAdapter(mArticleAdapter = new ArticleAdapter(mArticleList));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mHomeAdapter.setEnableLoadMore(true);
-        mHomeAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        mArticleAdapter.setEnableLoadMore(true);
+        mArticleAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 if(MyApp.isLogin()){
@@ -150,14 +142,14 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
                 }
             }
         });
-        mHomeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        mArticleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
             }
         });
 
-        mHomeAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        mArticleAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
 
@@ -201,25 +193,25 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         mBanner.setImages(urlList);
         mBanner.setBannerTitles(titleList);
         mBanner.start();
-        mHomeAdapter.addHeaderView(mBanner_view);
+        mArticleAdapter.addHeaderView(mBanner_view);
     }
 
     @Override
     public void loadArticle(List<ArticlePageBean.ItemBean> articleList) {
-        mHomeAdapter.replaceData(articleList);
+        mArticleAdapter.replaceData(articleList);
     }
 
     @Override
     public void collectArticle(int position) {
-        ArticlePageBean.ItemBean item = mHomeAdapter.getItem(position);
+        ArticlePageBean.ItemBean item = mArticleAdapter.getItem(position);
         item.setCollect(true);
-        mHomeAdapter.setData(position,item);
+        mArticleAdapter.setData(position,item);
     }
 
     @Override
     public void unCollectArticle(int position) {
-        ArticlePageBean.ItemBean item = mHomeAdapter.getItem(position);
+        ArticlePageBean.ItemBean item = mArticleAdapter.getItem(position);
         item.setCollect(false);
-        mHomeAdapter.setData(position,item);
+        mArticleAdapter.setData(position,item);
     }
 }

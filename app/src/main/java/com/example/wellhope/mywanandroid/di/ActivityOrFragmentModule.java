@@ -6,6 +6,8 @@ import com.example.wellhope.mywanandroid.ui.home.HomeFragment;
 import com.example.wellhope.mywanandroid.ui.login.LoginActivity;
 import com.example.wellhope.mywanandroid.ui.personal.PersonalFragment;
 import com.example.wellhope.mywanandroid.ui.search.SearchActivity;
+import com.example.wellhope.mywanandroid.ui.search.recommend.SearchRecommendFragment;
+import com.example.wellhope.mywanandroid.ui.search.result.SearchResultFragment;
 import com.example.wellhope.mywanandroid.ui.system.ArticlesFragment;
 import com.example.wellhope.mywanandroid.ui.system.SystemFragment;
 
@@ -38,5 +40,11 @@ public abstract class ActivityOrFragmentModule {
 
     @ContributesAndroidInjector()
     abstract PersonalFragment personalFragment();
+
+    @ContributesAndroidInjector(modules = ViewModule.class)
+    abstract SearchRecommendFragment recommendFragment();
+
+    @ContributesAndroidInjector(modules = ViewModule.class)
+    abstract SearchResultFragment resultFragment();
 
 }

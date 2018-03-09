@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/title_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_gravity="center_vertical"
+        android:text="历史记录"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/sp_16" />
+
+    <ImageView
+        android:id="@+id/title_clear"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:padding="@dimen/dp_4"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/dp_4"
+        android:src="@drawable/ic_clear"
+        />
+</LinearLayout>

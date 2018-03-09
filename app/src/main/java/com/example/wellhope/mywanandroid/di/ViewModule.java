@@ -6,8 +6,10 @@ import com.example.wellhope.mywanandroid.ui.home.HomeContract;
 import com.example.wellhope.mywanandroid.ui.home.HomeFragment;
 import com.example.wellhope.mywanandroid.ui.login.LoginActivity;
 import com.example.wellhope.mywanandroid.ui.login.LoginContract;
-import com.example.wellhope.mywanandroid.ui.search.SearchActivity;
-import com.example.wellhope.mywanandroid.ui.search.SearchContract;
+import com.example.wellhope.mywanandroid.ui.search.recommend.SearchRecommendContract;
+import com.example.wellhope.mywanandroid.ui.search.recommend.SearchRecommendFragment;
+import com.example.wellhope.mywanandroid.ui.search.result.SearchResultContract;
+import com.example.wellhope.mywanandroid.ui.search.result.SearchResultFragment;
 import com.example.wellhope.mywanandroid.ui.system.SystemContract;
 import com.example.wellhope.mywanandroid.ui.system.SystemFragment;
 
@@ -22,12 +24,19 @@ public abstract class ViewModule {
 
     @Binds
     abstract HomeContract.View homeView(HomeFragment fragment);
+
     @Binds
     abstract ArticleContract.View articleView(ArticleActivity activity);
-    @Binds
-    abstract SearchContract.View searchView(SearchActivity activity);
+
     @Binds
     abstract SystemContract.View systemView(SystemFragment fragment);
+
     @Binds
     abstract LoginContract.View loginView(LoginActivity activity);
+
+    @Binds
+    abstract SearchRecommendContract.View recommendView(SearchRecommendFragment fragment);
+
+    @Binds
+    abstract SearchResultContract.View resultView(SearchResultFragment fragment);
 }

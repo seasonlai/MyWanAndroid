@@ -39,11 +39,11 @@ public class HotWordDialog extends BasePopup<HotWordDialog> {
         ButterKnife.bind(this, inflate);
         hotwords = Arrays.asList(new String[]{"热更新","NDK"});
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 2));
-        recyclerView.setAdapter(adapter = new BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_hotword, hotwords) {
+        recyclerView.setAdapter(adapter = new BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_label, hotwords) {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             protected void convert(BaseViewHolder helper, String s) {
-                helper.setText(R.id.tv_hotword, s);
+                helper.setText(R.id.label_content, s);
             }
         });
         return inflate;

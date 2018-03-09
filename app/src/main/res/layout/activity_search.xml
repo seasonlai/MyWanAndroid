@@ -15,63 +15,79 @@
         android:background="@color/white"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
+        android:gravity="center_vertical"
         app:popupTheme="@style/AppTheme.PopupOverlay">
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/dp_4"
-            android:paddingRight="@dimen/dp_4"
-            >
+
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_marginLeft="@dimen/dp_4"
             android:src="@drawable/ic_back_black"
             />
-        </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:paddingLeft="@dimen/dp_4"-->
+            <!--android:paddingRight="@dimen/dp_4"-->
+            <!--&gt;-->
+        <!--<ImageView-->
+            <!--android:id="@+id/iv_back"-->
+            <!--android:layout_width="24dp"-->
+            <!--android:layout_height="24dp"-->
+            <!--android:src="@drawable/ic_back_black"-->
+            <!--/>-->
+        <!--</LinearLayout>-->
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <FrameLayout
+        android:id="@+id/search_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="4dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="历史记录"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_16" />
+    </FrameLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_history"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            />
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:padding="4dp">-->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/gray" />
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="8dp"-->
+            <!--android:text="历史记录"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:textSize="@dimen/sp_16" />-->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="搜索热词"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/sp_16" />
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/rv_history"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="56dp"-->
+            <!--/>-->
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_hotword"
-            android:layout_width="match_parent"
-            android:overScrollMode="never"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1px"-->
+            <!--android:layout_marginBottom="2dp"-->
+            <!--android:layout_marginTop="2dp"-->
+            <!--android:background="@color/gray" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="8dp"-->
+            <!--android:text="搜索热词"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:textSize="@dimen/sp_16" />-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/rv_hotword"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:overScrollMode="never"-->
+            <!--android:layout_height="match_parent" />-->
+    <!--</LinearLayout>-->
 </LinearLayout>

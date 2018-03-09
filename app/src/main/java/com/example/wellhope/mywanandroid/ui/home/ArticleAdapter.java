@@ -14,11 +14,11 @@ import java.util.List;
  * Created by Wellhope on 2018/3/3.
  */
 
-public class HomeAdapter extends BaseQuickAdapter<ArticlePageBean.ItemBean,BaseViewHolder>{
+public class ArticleAdapter extends BaseQuickAdapter<ArticlePageBean.ItemBean,BaseViewHolder>{
 
     private View.OnClickListener mClickListener;
 
-    public HomeAdapter(@Nullable List<ArticlePageBean.ItemBean> data) {
+    public ArticleAdapter(@Nullable List<ArticlePageBean.ItemBean> data) {
         super(R.layout.item_article,data);
     }
 
@@ -30,6 +30,7 @@ public class HomeAdapter extends BaseQuickAdapter<ArticlePageBean.ItemBean,BaseV
         helper.setImageResource(R.id.article_favorite,item.isCollect()?
                 R.drawable.ic_favor_sel:R.drawable.ic_favor_def);
         helper.addOnClickListener(R.id.article_favorite);
+        helper.setText(R.id.article_time,item.getNiceDate());
     }
 
 //    public View.OnClickListener getClickListener() {

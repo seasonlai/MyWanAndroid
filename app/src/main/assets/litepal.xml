@@ -4,7 +4,7 @@
     <dbname value="mywanandroiddb"/>
     <version value="1"/>
     <list>
-        <mapping class="com.example.wellhope.mywanandroid.bean.HistoryBean"/>
+        <mapping class="com.example.wellhope.mywanandroid.bean.RecommendBean$HistoryBean"/>
     </list>
 
 </litepal>

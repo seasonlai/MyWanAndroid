@@ -2,9 +2,8 @@ package com.example.wellhope.mywanandroid.net;
 
 import com.example.wellhope.mywanandroid.bean.ArticlePageBean;
 import com.example.wellhope.mywanandroid.bean.BannerBean;
-import com.example.wellhope.mywanandroid.bean.HotWordBean;
 import com.example.wellhope.mywanandroid.bean.MsgBean;
-import com.example.wellhope.mywanandroid.bean.StarWebBean;
+import com.example.wellhope.mywanandroid.bean.RecommendBean;
 import com.example.wellhope.mywanandroid.bean.SystemBean;
 
 import java.util.List;
@@ -32,10 +31,10 @@ public interface WanAndroidApi {
     Observable<MsgBean<ArticlePageBean>> getPageArticle(@Path("num") int num);
 
     @GET("/hotkey/json")
-    Observable<MsgBean<List<HotWordBean>>> getHotWord();
+    Observable<MsgBean<List<RecommendBean.HotWordBean>>> getHotWord();
 
     @GET("/friend/json")
-    Observable<MsgBean<List<StarWebBean>>> getStarWeb();
+    Observable<MsgBean<List<RecommendBean.StarWebBean>>> getStarWeb();
 
     @GET("/tree/json")
     Observable<MsgBean<List<SystemBean>>> getSystem();
@@ -53,4 +52,8 @@ public interface WanAndroidApi {
     @POST("/user/register")
     @FormUrlEncoded
     Observable<MsgBean> register(@Field("username") String userName, @Field("password")String pwd, @Field("repassword")String repwd);
+
+    @POST("/article/query/{num}/json")
+    @FormUrlEncoded
+    Observable<MsgBean<ArticlePageBean>> search(@Path("num") int num,@Field("k")String key);
 }
