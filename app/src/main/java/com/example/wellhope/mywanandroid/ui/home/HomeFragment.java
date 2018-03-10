@@ -4,13 +4,16 @@ package com.example.wellhope.mywanandroid.ui.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -24,6 +27,8 @@ import com.example.wellhope.mywanandroid.bean.ArticlePageBean;
 import com.example.wellhope.mywanandroid.bean.BannerBean;
 import com.example.wellhope.mywanandroid.event.LoginEvent;
 import com.example.wellhope.mywanandroid.event.RxBus;
+import com.example.wellhope.mywanandroid.ui.article.ArticleActivity;
+import com.example.wellhope.mywanandroid.ui.article.ArticleAdapter;
 import com.example.wellhope.mywanandroid.ui.login.LoginActivity;
 import com.example.wellhope.mywanandroid.ui.search.SearchActivity;
 import com.example.wellhope.mywanandroid.utils.StatusBarUtil;
@@ -145,23 +150,23 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         mArticleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                ArticleActivity.launch(getContext(), (Parcelable) adapter.getItem(position));
             }
         });
 
         mArticleAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-
+                mPresenter.getPageArticle(pageNum);
             }
-        });
+        },mRecyclerView);
 
         RxBus.getInstance().toFlowable(LoginEvent.class)
                 .subscribe(new Consumer<LoginEvent>() {
                     @Override
                     public void accept(LoginEvent loginEvent) throws Exception {
                         pageNum = 0;
-                        mPresenter.getPageArticle(pageNum);
+                        mPresenter.getPageArticle(0);
                     }
                 });
     }
@@ -198,7 +203,30 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
     @Override
     public void loadArticle(List<ArticlePageBean.ItemBean> articleList) {
+
+        if(articleList==null||articleList.size()==0){
+            mArticleAdapter.setEnableLoadMore(false);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.item_tips,null);
+            ((TextView)view.findViewById(R.id.tips_content)).setText("拉到底啦");
+            mArticleAdapter.addFooterView(view);
+            return;
+        }
+        pageNum++;
         mArticleAdapter.replaceData(articleList);
+    }
+
+    @Override
+    public void loadMoreArticle(List<ArticlePageBean.ItemBean> articleList) {
+        mArticleAdapter.loadMoreComplete();
+        if(articleList==null||articleList.size()==0){
+            mArticleAdapter.setEnableLoadMore(false);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.item_tips,null);
+            ((TextView)view.findViewById(R.id.tips_content)).setText("拉到底啦");
+            mArticleAdapter.addFooterView(view);
+            return;
+        }
+        pageNum++;
+        mArticleAdapter.addData(articleList);
     }
 
     @Override

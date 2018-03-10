@@ -1,4 +1,4 @@
-package com.example.wellhope.mywanandroid.ui.search.result;
+package com.example.wellhope.mywanandroid.ui.personal;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.wellhope.mywanandroid.base.BaseObserver;
@@ -7,6 +7,7 @@ import com.example.wellhope.mywanandroid.bean.ArticlePageBean;
 import com.example.wellhope.mywanandroid.bean.MsgBean;
 import com.example.wellhope.mywanandroid.net.RxSchedulers;
 import com.example.wellhope.mywanandroid.net.WanAndroidApi;
+import com.example.wellhope.mywanandroid.ui.search.result.SearchResultContract;
 
 import javax.inject.Inject;
 
@@ -16,36 +17,37 @@ import io.reactivex.functions.Function;
  * Created by Wellhope on 2018/3/9.
  */
 
-public class SearchResultPresenter extends BasePresenter<SearchResultContract.View> implements SearchResultContract.Presenter {
+public class MyFavorPresenter extends BasePresenter<MyFavorContract.View> implements MyFavorContract.Presenter {
 
     WanAndroidApi mApi;
 
+
     @Inject
-    public SearchResultPresenter(WanAndroidApi api,SearchResultContract.View view) {
+    public MyFavorPresenter(WanAndroidApi api, MyFavorContract.View view) {
         mApi = api;
         this.mView = view;
     }
 
     @Override
-    public void search(String key, final int pageNum) {
-        if(mView==null)
+    public void getFavor(final int pageNum) {
+        if (mView == null)
             return;
-        mApi.search(pageNum,key)
+        mApi.getFavor(pageNum)
                 .compose(RxSchedulers.<MsgBean<ArticlePageBean>>switchSchedulers())
                 .map(RxSchedulers.<ArticlePageBean>mapResult())
                 .subscribe(new BaseObserver<ArticlePageBean>() {
                     @Override
                     protected void success(ArticlePageBean articlePageBean) {
-                        if(pageNum==0) {
+                        if (pageNum == 0) {
                             mView.loadResult(articlePageBean);
-                        }else {
+
+                        } else
                             mView.loadMoreResult(articlePageBean);
-                        }
                     }
 
                     @Override
                     protected void fail(Throwable e) {
-                        ToastUtils.showShort(e.getMessage());
+
                     }
                 });
     }
@@ -57,16 +59,17 @@ public class SearchResultPresenter extends BasePresenter<SearchResultContract.Vi
                 .map(new Function<MsgBean, Boolean>() {
                     @Override
                     public Boolean apply(MsgBean msgBean) throws Exception {
-                        return msgBean.getErrorCode()>=0;
+                        return msgBean.getErrorCode() >= 0;
                     }
                 })
                 .subscribe(new BaseObserver<Boolean>() {
                     @Override
                     protected void success(Boolean success) {
-                        if(success){
+                        if (success) {
                             mView.unCollectArticle(position);
                         }
                     }
+
                     @Override
                     protected void fail(Throwable e) {
                         ToastUtils.showShort(e.getMessage());
@@ -81,16 +84,17 @@ public class SearchResultPresenter extends BasePresenter<SearchResultContract.Vi
                 .map(new Function<MsgBean, Boolean>() {
                     @Override
                     public Boolean apply(MsgBean msgBean) throws Exception {
-                        return msgBean.getErrorCode()>=0;
+                        return msgBean.getErrorCode() >= 0;
                     }
                 })
                 .subscribe(new BaseObserver<Boolean>() {
                     @Override
                     protected void success(Boolean success) {
-                        if(success){
+                        if (success) {
                             mView.collectArticle(position);
                         }
                     }
+
                     @Override
                     protected void fail(Throwable e) {
                         ToastUtils.showShort(e.getMessage());

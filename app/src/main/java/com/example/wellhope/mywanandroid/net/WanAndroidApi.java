@@ -16,6 +16,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by Wellhope on 2018/3/3.
@@ -39,6 +40,9 @@ public interface WanAndroidApi {
     @GET("/tree/json")
     Observable<MsgBean<List<SystemBean>>> getSystem();
 
+    @GET("/article/list/{num}/json")
+    Observable<MsgBean<ArticlePageBean>> getSystemArticles( @Path("num")int pageNum,@Query("cid") int cid);
+
     @POST("/lg/collect/{id}/json")
     Observable<MsgBean> collectArticle(@Path("id")int id);
 
@@ -56,4 +60,8 @@ public interface WanAndroidApi {
     @POST("/article/query/{num}/json")
     @FormUrlEncoded
     Observable<MsgBean<ArticlePageBean>> search(@Path("num") int num,@Field("k")String key);
+
+    @POST("/lg/collect/list/{num}/json")
+    @FormUrlEncoded
+    Observable<MsgBean<ArticlePageBean>> getFavor(@Path("num") int num);
 }

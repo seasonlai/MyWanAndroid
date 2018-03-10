@@ -59,18 +59,10 @@ public class PersonalFragment extends BaseFragment {
     @Override
     protected void viewCreated(View view, @Nullable Bundle savedInstanceState) {
         changeStatus(MyApp.isLogin());
-
-        RxBus.getInstance().toFlowable(LoginEvent.class)
-                .subscribe(new Consumer<LoginEvent>() {
-                    @Override
-                    public void accept(LoginEvent loginEvent) throws Exception {
-                        changeStatus(MyApp.isLogin());
-                    }
-                });
     }
 
     private void changeStatus(boolean isLogin) {
-        if (MyApp.isLogin()) {
+        if (isLogin) {
             headView.setImageResource(R.drawable.head_login);
             loginTip.setVisibility(View.GONE);
             exitLogin.setVisibility(View.VISIBLE);
@@ -94,10 +86,14 @@ public class PersonalFragment extends BaseFragment {
 
     @OnClick(R.id.myFavor)
     public void myFavor() {
-
+        if (MyApp.isLogin()){
+            MyFavorActivity.launch(getContext());
+        }else {
+            LoginActivity.launch(getContext());
+        }
     }
 
-    @OnClick(R.id.headView)
+    @OnClick({R.id.headView,R.id.tv_tip})
     public void toLogin() {
         if (!MyApp.isLogin()) {
             LoginActivity.launch(getContext());
@@ -106,7 +102,13 @@ public class PersonalFragment extends BaseFragment {
 
     @Override
     protected void lazyInit() {
-
+        RxBus.getInstance().toFlowable(LoginEvent.class)
+                .subscribe(new Consumer<LoginEvent>() {
+                    @Override
+                    public void accept(LoginEvent loginEvent) throws Exception {
+                        changeStatus(MyApp.isLogin());
+                    }
+                });
     }
 
 }

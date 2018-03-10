@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.example.wellhope.mywanandroid.bean.SystemBean;
+import com.example.wellhope.mywanandroid.ui.system.articles.ArticleListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class SystemAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return ArticlesFragment.newInstance(kinds.get(position).getId());
+        return ArticleListFragment.newInstance(kinds.get(position).getId());
     }
 
     @Override

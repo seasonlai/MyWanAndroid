@@ -2,9 +2,9 @@ package com.example.wellhope.mywanandroid.ui.search.result;
 
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -19,7 +19,8 @@ import com.example.wellhope.mywanandroid.base.BaseFragment;
 import com.example.wellhope.mywanandroid.bean.ArticlePageBean;
 import com.example.wellhope.mywanandroid.event.RxBus;
 import com.example.wellhope.mywanandroid.event.SearchEvent;
-import com.example.wellhope.mywanandroid.ui.home.ArticleAdapter;
+import com.example.wellhope.mywanandroid.ui.article.ArticleActivity;
+import com.example.wellhope.mywanandroid.ui.article.ArticleAdapter;
 import com.example.wellhope.mywanandroid.ui.login.LoginActivity;
 
 import butterknife.BindView;
@@ -55,6 +56,7 @@ public class SearchResultFragment extends BaseFragment<SearchResultPresenter> im
 
     @Override
     public void loadResult(ArticlePageBean articlePage) {
+        mRecyclerView.requestFocus();
         if (articlePage.getDatas() == null || articlePage.getDatas().size() == 0) {
             mArticleAdapter.setEnableLoadMore(false);
             View view = LayoutInflater.from(getContext()).inflate(R.layout.item_tips,null);
@@ -124,7 +126,7 @@ public class SearchResultFragment extends BaseFragment<SearchResultPresenter> im
         mArticleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                ArticleActivity.launch(getContext(), (Parcelable) adapter.getItem(position));
             }
         });
         mArticleAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -133,6 +135,18 @@ public class SearchResultFragment extends BaseFragment<SearchResultPresenter> im
                 mPresenter.search(searchKey, pageNum);
             }
         }, mRecyclerView);
+
+    }
+
+    @Override
+    protected void lazyInit() {
+        if(getArguments()!=null){
+            searchKey = getArguments().getString(SEARCH_KEY);
+        }
+
+        if (!TextUtils.isEmpty(searchKey)) {
+            mPresenter.search(searchKey, 0);
+        }
 
         RxBus.getInstance().toFlowable(SearchEvent.class)
                 .subscribe(new Consumer<SearchEvent>() {
@@ -145,12 +159,5 @@ public class SearchResultFragment extends BaseFragment<SearchResultPresenter> im
                         }
                     }
                 });
-    }
-
-    @Override
-    protected void lazyInit() {
-//        if (!TextUtils.isEmpty(searchKey)) {
-//            mPresenter.search(searchKey, 0);
-//        }
     }
 }

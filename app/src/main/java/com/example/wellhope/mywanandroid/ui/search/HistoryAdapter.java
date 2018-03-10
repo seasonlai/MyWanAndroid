@@ -105,7 +105,7 @@ public class HistoryAdapter extends ArrayAdapter<HistoryBean> {
 
     @Override
     public void remove(@Nullable HistoryBean object) {
-//        super.remove(object);
+        super.remove(object);
         mOriginData.remove(object);
     }
 

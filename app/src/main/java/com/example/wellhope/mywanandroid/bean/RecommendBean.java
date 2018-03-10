@@ -1,5 +1,8 @@
 package com.example.wellhope.mywanandroid.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
 import org.litepal.crud.DataSupport;
@@ -216,7 +219,7 @@ public class RecommendBean{
     }
 
 
-    public static class StarWebBean implements MultiItemEntity {
+    public static class StarWebBean implements MultiItemEntity,Parcelable {
         /**
          * icon :
          * id : 17
@@ -232,6 +235,28 @@ public class RecommendBean{
         private String name;
         private int order;
         private int visible;
+
+
+        protected StarWebBean(Parcel in) {
+            icon = in.readString();
+            id = in.readInt();
+            link = in.readString();
+            name = in.readString();
+            order = in.readInt();
+            visible = in.readInt();
+        }
+
+        public static final Creator<StarWebBean> CREATOR = new Creator<StarWebBean>() {
+            @Override
+            public StarWebBean createFromParcel(Parcel in) {
+                return new StarWebBean(in);
+            }
+
+            @Override
+            public StarWebBean[] newArray(int size) {
+                return new StarWebBean[size];
+            }
+        };
 
         public String getIcon() {
             return icon;
@@ -310,6 +335,21 @@ public class RecommendBean{
             result = 31 * result + order;
             result = 31 * result + visible;
             return result;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(icon);
+            dest.writeInt(id);
+            dest.writeString(link);
+            dest.writeString(name);
+            dest.writeInt(order);
+            dest.writeInt(visible);
         }
     }
 

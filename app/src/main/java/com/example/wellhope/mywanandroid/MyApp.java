@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.v4.content.ContextCompat;
 
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;

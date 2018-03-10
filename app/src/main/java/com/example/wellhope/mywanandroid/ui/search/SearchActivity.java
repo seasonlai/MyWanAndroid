@@ -9,10 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.wellhope.mywanandroid.R;
 import com.example.wellhope.mywanandroid.base.BaseActivity;
 import com.example.wellhope.mywanandroid.base.SupportFragment;
@@ -61,7 +63,6 @@ public class SearchActivity extends BaseActivity {
             searchRecommendFragment = findFragment(SearchRecommendFragment.class);
         }
         getSupportDelegate().loadRootFragment(R.id.search_container, searchRecommendFragment);
-//        getSupportDelegate().loadMultipleRootFragment(R.id.search_container, 0, mFragments);
     }
 
     private void subscribeEvent() {
@@ -110,13 +111,34 @@ public class SearchActivity extends BaseActivity {
 
 
     private void setSearchTxtAndSearch(String txt) {
-        TextView searchSrcView = searchView.findViewById(R.id.search_src_text);
+        EditText searchSrcView = searchView.findViewById(R.id.search_src_text);
         searchSrcView.setText(txt);
+        searchSrcView.setSelection(txt.length());
+        searchSrcView.clearFocus();
         searchView.clearFocus();
-//        showHideFragment(mFragments[1], mFragments[0]);
-        getSupportDelegate().start(SearchResultFragment.newInstance());
-//        getSupportDelegate().start(SearchResultFragment.newInstance(txt));
-        RxBus.getInstance().post(new SearchEvent(txt, true));
+        mContainer.requestFocus();
+        toSearchResult(txt);
+        //保存历史记录
+        RxBus.getInstance().post(new HistoryEvent.SingleEvent(
+                new HistoryBean(txt, new Date().getTime()), HistoryEvent.TYPE_SAVE));
+    }
+
+
+
+    @Override
+    public void onBackPressedSupport() {
+        super.onBackPressedSupport();
+        searchView.clearFocus();
+        mContainer.requestFocus();
+    }
+
+    private void toSearchResult(String txt){
+        if(findFragment(SearchResultFragment.class)!=null){
+            ToastUtils.showShort("有了");
+            RxBus.getInstance().post(new SearchEvent(txt, true));
+        }else {
+            getSupportDelegate().start(SearchResultFragment.newInstance(txt));
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -133,13 +155,12 @@ public class SearchActivity extends BaseActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchView.clearFocus();
-                getSupportDelegate().start(SearchResultFragment.newInstance(query));
-                //保存历史记录
-                RxBus.getInstance().post(new HistoryEvent.SingleEvent(
-                        new HistoryBean(query, new Date().getTime()), HistoryEvent.TYPE_SAVE));
-
-                RxBus.getInstance().post(new SearchEvent(query, true));
+//                searchView.clearFocus();
+//                //保存历史记录
+//                RxBus.getInstance().post(new HistoryEvent.SingleEvent(
+//                        new HistoryBean(query, new Date().getTime()), HistoryEvent.TYPE_SAVE));
+//                toSearchResult(query);
+                setSearchTxtAndSearch(query);
                 return true;
             }
 
@@ -158,12 +179,12 @@ public class SearchActivity extends BaseActivity {
         mHistoryTipAdapter.setOnClickListener(new HistoryAdapter.OnClickListener() {
             @Override
             public void textClick(HistoryBean bean) {
-
+                setSearchTxtAndSearch(bean.getHistoryContent());
             }
 
             @Override
             public void delClick(HistoryBean bean) {
-
+                RxBus.getInstance().post(new HistoryEvent.SingleEvent(bean,HistoryEvent.TYPE_DEL));
             }
         });
 
@@ -172,7 +193,7 @@ public class SearchActivity extends BaseActivity {
 
     @OnClick(R.id.iv_back)
     public void backward() {
-        finish();
+        onBackPressed();
     }
 
 }

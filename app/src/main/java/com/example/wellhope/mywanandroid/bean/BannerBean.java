@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by season on 2018/3/3.
  */
 
-public class BannerBean extends ParcelableBean {
+public class BannerBean implements Parcelable{
 
     /**
      * desc : 一起来做个App吧
@@ -30,7 +30,6 @@ public class BannerBean extends ParcelableBean {
     private String url;
 
     protected BannerBean(Parcel in) {
-        super(in);
         desc = in.readString();
         id = in.readInt();
         imagePath = in.readString();

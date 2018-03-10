@@ -25,26 +25,13 @@
             android:layout_marginLeft="@dimen/dp_4"
             android:src="@drawable/ic_back_black"
             />
-        <!--<LinearLayout-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:paddingLeft="@dimen/dp_4"-->
-            <!--android:paddingRight="@dimen/dp_4"-->
-            <!--&gt;-->
-        <!--<ImageView-->
-            <!--android:id="@+id/iv_back"-->
-            <!--android:layout_width="24dp"-->
-            <!--android:layout_height="24dp"-->
-            <!--android:src="@drawable/ic_back_black"-->
-            <!--/>-->
-        <!--</LinearLayout>-->
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/search_container"
         android:layout_width="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:layout_height="match_parent">
 
     </FrameLayout>

@@ -25,14 +25,14 @@ import retrofit2.Response;
  * Created by season on 2018/3/3.
  */
 
-public class HomePresenter extends BasePresenter<HomeContract.View> implements HomeContract.Presenter{
+public class HomePresenter extends BasePresenter<HomeContract.View> implements HomeContract.Presenter {
 
     private WanAndroidApi wanAndroidApi;
 
-    public static final String TAG =HomePresenter.class.getSimpleName();
+    public static final String TAG = HomePresenter.class.getSimpleName();
 
     @Inject
-    public HomePresenter(WanAndroidApi wanAndroidApi,HomeContract.View view) {
+    public HomePresenter(WanAndroidApi wanAndroidApi, HomeContract.View view) {
         this.wanAndroidApi = wanAndroidApi;
         this.mView = view;
     }
@@ -40,7 +40,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
 
     @Override
     public void getBanner() {
-        if(wanAndroidApi==null)
+        if (wanAndroidApi == null)
             return;
         wanAndroidApi.getBannerList()
                 .compose(RxSchedulers.<MsgBean<List<BannerBean>>>switchSchedulers())
@@ -64,8 +64,8 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
     }
 
     @Override
-    public void getPageArticle(@IntRange(from = 0) int pageNum) {
-        if(wanAndroidApi==null)
+    public void getPageArticle(@IntRange(from = 0) final int pageNum) {
+        if (wanAndroidApi == null)
             return;
         wanAndroidApi.getPageArticle(pageNum)
                 .compose(RxSchedulers.<MsgBean<ArticlePageBean>>switchSchedulers())
@@ -78,7 +78,10 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
                 .subscribe(new BaseObserver<List<ArticlePageBean.ItemBean>>() {
                     @Override
                     protected void success(List<ArticlePageBean.ItemBean> itemBeans) {
-                        mView.loadArticle(itemBeans);
+                        if (pageNum == 0)
+                            mView.loadArticle(itemBeans);
+                        else
+                            mView.loadMoreArticle(itemBeans);
                     }
 
                     @Override
@@ -95,16 +98,17 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
                 .map(new Function<MsgBean, Boolean>() {
                     @Override
                     public Boolean apply(MsgBean msgBean) throws Exception {
-                        return msgBean.getErrorCode()>=0;
+                        return msgBean.getErrorCode() >= 0;
                     }
                 })
                 .subscribe(new BaseObserver<Boolean>() {
                     @Override
                     protected void success(Boolean success) {
-                        if(success){
+                        if (success) {
                             mView.collectArticle(position);
                         }
                     }
+
                     @Override
                     protected void fail(Throwable e) {
 
@@ -113,22 +117,23 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
     }
 
     @Override
-    public void unCollectArticle(int id,final int position) {
+    public void unCollectArticle(int id, final int position) {
         wanAndroidApi.unCollectArticle(id)
                 .compose(RxSchedulers.<MsgBean>switchSchedulers())
                 .map(new Function<MsgBean, Boolean>() {
                     @Override
                     public Boolean apply(MsgBean msgBean) throws Exception {
-                        return msgBean.getErrorCode()>=0;
+                        return msgBean.getErrorCode() >= 0;
                     }
                 })
                 .subscribe(new BaseObserver<Boolean>() {
                     @Override
                     protected void success(Boolean success) {
-                        if(success){
+                        if (success) {
                             mView.unCollectArticle(position);
                         }
                     }
+
                     @Override
                     protected void fail(Throwable e) {
 

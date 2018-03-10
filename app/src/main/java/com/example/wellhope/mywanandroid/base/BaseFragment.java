@@ -83,6 +83,12 @@ public abstract class BaseFragment<T1 extends BasePresenter> extends SupportFrag
 //        }
 //    }
 
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

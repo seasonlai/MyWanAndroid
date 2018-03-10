@@ -15,7 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewConfiguration;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.example.wellhope.mywanandroid.R;
 import com.example.wellhope.mywanandroid.utils.ContextUtils;
 import com.example.wellhope.mywanandroid.utils.StatusBarUtil;
@@ -31,6 +33,7 @@ public class MyToolBarBehavior extends CoordinatorLayout.Behavior<View> {
 
     public MyToolBarBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
+        targetHeight= ViewConfiguration.get(context).getScaledTouchSlop()+10;
 //        targetHeight = ContextUtils.dip2px(context, context.getResources().getDimension(R.dimen.banner_height));
     }
 
@@ -48,7 +51,11 @@ public class MyToolBarBehavior extends CoordinatorLayout.Behavior<View> {
                                int dxUnconsumed, int dyUnconsumed, int type) {
 //        Log.e(TAG, "onNestedScroll: child-" + child);
         if (child instanceof MyToolBar) {
-            resetBarLayout(child, target);
+            if(dxUnconsumed<0){
+                animateChild((MyToolBar) child, false);
+            }else {
+                resetBarLayout(child, target);
+            }
         }
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type);
     }
@@ -95,9 +102,10 @@ public class MyToolBarBehavior extends CoordinatorLayout.Behavior<View> {
         if (position != 0)
             return targetHeight;
         View firstVisiableChildView = layoutManager.findViewByPosition(position);
-        if (targetHeight < 0) {
-            targetHeight = firstVisiableChildView.getHeight() - child.getHeight() - child.getTop();
-        }
+//        if (targetHeight < 0) {
+//            targetHeight = firstVisiableChildView.getHeight() - child.getHeight() - child.getTop();
+//        }
+
 //        Log.e(TAG, "getScrollYDistance: position : " + position +
 //                "  firstVisiableChildView.getTop() : ");
         return -firstVisiableChildView.getTop();

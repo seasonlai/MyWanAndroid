@@ -1,4 +1,4 @@
-package com.example.wellhope.mywanandroid.ui.home;
+package com.example.wellhope.mywanandroid.ui.article;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.example.wellhope.mywanandroid.R;
 import com.example.wellhope.mywanandroid.base.BaseActivity;
-import com.example.wellhope.mywanandroid.bean.ParcelableBean;
 import com.example.wellhope.mywanandroid.utils.StatusBarUtil;
 
 import butterknife.BindView;
@@ -34,7 +33,7 @@ public class ArticleActivity extends BaseActivity<ArticlePresenter> implements A
         return R.layout.activity_article;
     }
 
-    public static void launch(Context context,ParcelableBean data){
+    public static void launch(Context context,Parcelable data){
         Intent intent = new Intent(context,ArticleActivity.class);
         intent.putExtra(ARTICLE,data);
         context.startActivity(intent);
@@ -106,7 +105,9 @@ public class ArticleActivity extends BaseActivity<ArticlePresenter> implements A
         if(!TextUtils.isEmpty(article.url)) {
             mWebView.loadUrl(article.url);
 //            getSupportActionBar().setSubtitle(TextUtils.isEmpty(article.url)?"":article.title);
-            mTitle.setText(TextUtils.isEmpty(article.url)?"":article.title);
+            mTitle.setText(TextUtils.isEmpty(article.url)?"":
+                    article.title.replace("<em class='highlight'>","")
+                            .replace("</em>",""));
         }
     }
 

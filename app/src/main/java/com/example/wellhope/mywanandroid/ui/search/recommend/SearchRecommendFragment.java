@@ -3,6 +3,7 @@ package com.example.wellhope.mywanandroid.ui.search.recommend;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -20,8 +21,8 @@ import com.example.wellhope.mywanandroid.bean.RecommendBean;
 import com.example.wellhope.mywanandroid.event.HistoryEvent;
 import com.example.wellhope.mywanandroid.event.RxBus;
 import com.example.wellhope.mywanandroid.event.SearchEvent;
+import com.example.wellhope.mywanandroid.ui.article.ArticleActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -59,6 +60,12 @@ public class SearchRecommendFragment extends BaseFragment<SearchRecommendPresent
         subscribeEvent();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mRecyclerView.requestFocus();
+    }
+
     private void subscribeEvent() {
         RxBus.getInstance().toFlowable(HistoryEvent.SingleEvent.class)
                 .subscribe(new Consumer<HistoryEvent.SingleEvent>() {
@@ -90,7 +97,7 @@ public class SearchRecommendFragment extends BaseFragment<SearchRecommendPresent
                         ((RecommendBean.HotWordBean) item).getName()));
                 break;
             case RecommendBean.TYPE_STARWEB:
-
+                ArticleActivity.launch(getContext(), (Parcelable) item);
                 break;
         }
     }
@@ -137,7 +144,7 @@ public class SearchRecommendFragment extends BaseFragment<SearchRecommendPresent
     public void clearHistory() {
         RxBus.getInstance().post(new HistoryEvent.ListEvent(null,HistoryEvent.TYPE_DEL));
         for (int i = 1; i <= historyCount; i++) {
-            mAdapter.remove(i);
+            mAdapter.remove(1);
         }
         mAdapter.addData(1,new RecommendBean.Tips("暂无历史记录"));
     }

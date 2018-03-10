@@ -1,4 +1,4 @@
-package com.example.wellhope.mywanandroid.ui.home;
+package com.example.wellhope.mywanandroid.ui.article;
 
 import com.example.wellhope.mywanandroid.base.BaseView;
 

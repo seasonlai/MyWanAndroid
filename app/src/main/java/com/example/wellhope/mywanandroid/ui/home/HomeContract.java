@@ -16,6 +16,7 @@ public class HomeContract {
     public interface View extends BaseView{
         void loadBanner(List<BannerBean> bannerList);
         void loadArticle(List<ArticlePageBean.ItemBean> articleList);
+        void loadMoreArticle(List<ArticlePageBean.ItemBean> articleList);
         void collectArticle(int position);
         void unCollectArticle(int position);
     }

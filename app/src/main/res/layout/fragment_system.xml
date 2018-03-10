@@ -16,7 +16,7 @@
             xmlns:tl="http://schemas.android.com/apk/res-auto"
             android:id="@+id/slidingTabLayout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="44dp"
             android:background="@color/colorPrimary"
             tl:tl_indicator_color="@android:color/white"
             tl:tl_textSelectColor="@android:color/white"

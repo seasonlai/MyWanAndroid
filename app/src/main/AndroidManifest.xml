@@ -26,13 +26,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.home.ArticleActivity"
+            android:name=".ui.article.ArticleActivity"
             android:label="@string/title_activity_article"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.search.SearchActivity"
             android:windowSoftInputMode="adjustNothing" />
-        <activity android:name=".ui.login.LoginActivity"></activity>
+        <activity android:name=".ui.login.LoginActivity" />
+        <activity android:name=".ui.personal.MyFavorActivity"></activity>
     </application>
 
 </manifest>

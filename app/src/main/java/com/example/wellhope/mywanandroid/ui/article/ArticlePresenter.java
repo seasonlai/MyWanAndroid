@@ -1,8 +1,9 @@
-package com.example.wellhope.mywanandroid.ui.home;
+package com.example.wellhope.mywanandroid.ui.article;
 
 import com.example.wellhope.mywanandroid.base.BasePresenter;
 import com.example.wellhope.mywanandroid.bean.ArticlePageBean;
 import com.example.wellhope.mywanandroid.bean.BannerBean;
+import com.example.wellhope.mywanandroid.bean.RecommendBean;
 
 import javax.inject.Inject;
 
@@ -29,6 +30,9 @@ public class ArticlePresenter extends BasePresenter<ArticleContract.View> implem
         else if(o instanceof ArticlePageBean.ItemBean){
             ArticlePageBean.ItemBean bean = (ArticlePageBean.ItemBean) o;
             this.mView.loadArticle(new Article(bean.getLink(),bean.getTitle()));
+        }else if(o instanceof RecommendBean.StarWebBean){
+            RecommendBean.StarWebBean bean = (RecommendBean.StarWebBean) o;
+            this.mView.loadArticle(new Article(bean.getLink(),bean.getName()));
         }
     }
 
