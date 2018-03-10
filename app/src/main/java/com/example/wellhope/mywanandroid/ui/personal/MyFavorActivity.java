@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -25,13 +26,16 @@ import butterknife.BindView;
 
 public class MyFavorActivity extends BaseActivity<MyFavorPresenter> implements MyFavorContract.View {
 
+    @BindView(R.id.myfavor_toolbar)
+    Toolbar mToolbar;
+
     @Override
     protected int getContentLayout() {
         return R.layout.activity_my_favor;
     }
 
-    public static void launch(Context context){
-        context.startActivity(new Intent(context,MyFavorActivity.class));
+    public static void launch(Context context) {
+        context.startActivity(new Intent(context, MyFavorActivity.class));
     }
 
     int pageNum;
@@ -43,6 +47,14 @@ public class MyFavorActivity extends BaseActivity<MyFavorPresenter> implements M
 
     @Override
     protected void bindView(@Nullable Bundle savedInstanceState) {
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         mRecyclerView.setAdapter(mArticleAdapter = new ArticleAdapter(null));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mArticleAdapter.setEnableLoadMore(true);
@@ -79,11 +91,16 @@ public class MyFavorActivity extends BaseActivity<MyFavorPresenter> implements M
     }
 
     @Override
+    protected void loadData() {
+        mPresenter.getFavor(0);
+    }
+
+    @Override
     public void loadResult(ArticlePageBean articlePage) {
         if (articlePage.getDatas() == null || articlePage.getDatas().size() == 0) {
             mArticleAdapter.setEnableLoadMore(false);
-            View view = LayoutInflater.from(this).inflate(R.layout.item_tips,null);
-            ((TextView)view.findViewById(R.id.tips_content)).setText("拉到底啦");
+            View view = LayoutInflater.from(this).inflate(R.layout.item_tips, null);
+            ((TextView) view.findViewById(R.id.tips_content)).setText("拉到底啦");
             mArticleAdapter.addFooterView(view);
             return;
         }
@@ -96,8 +113,8 @@ public class MyFavorActivity extends BaseActivity<MyFavorPresenter> implements M
         mArticleAdapter.loadMoreComplete();
         if (articlePage.getDatas() == null || articlePage.getDatas().size() == 0) {
             mArticleAdapter.setEnableLoadMore(false);
-            View view = LayoutInflater.from(this).inflate(R.layout.item_tips,null);
-            ((TextView)view.findViewById(R.id.tips_content)).setText("拉到底啦");
+            View view = LayoutInflater.from(this).inflate(R.layout.item_tips, null);
+            ((TextView) view.findViewById(R.id.tips_content)).setText("拉到底啦");
             mArticleAdapter.addFooterView(view);
             return;
         }
