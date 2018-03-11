@@ -3,32 +3,40 @@ package com.example.wellhope.mywanandroid.base;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by season on 2018/2/25.
  */
 
-public abstract class BasePresenter<V extends BaseView> implements BaseContract.Presenter<V>{
+public abstract class BasePresenter<V extends BaseView> implements BaseContract.Presenter<V> {
 
-    @Inject
-    protected CompositeDisposable mCompositeDisposable;
+    private CompositeDisposable mCompositeDisposable;
 
     protected V mView;
 
-    public void subscribe(){
+    protected BasePresenter(CompositeDisposable compositeDisposable) {
+        mCompositeDisposable = compositeDisposable == null ?
+                new CompositeDisposable() : compositeDisposable;
+    }
+
+    public void subscribe() {
 
     }
 
-    public void unSubscribe(){
-        if(mCompositeDisposable!=null){
+    public void unSubscribe() {
+        if (mCompositeDisposable != null) {
             mCompositeDisposable.clear();
         }
     }
 
-    public void detachView(){
-        if(mView!=null){
+    public void addDisposable(Disposable disposable) {
+        mCompositeDisposable.add(disposable);
+    }
+
+    public void detachView() {
+        if (mView != null) {
             mView = null;
         }
     }
-
 }

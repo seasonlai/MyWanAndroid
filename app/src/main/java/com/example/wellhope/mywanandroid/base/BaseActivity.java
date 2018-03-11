@@ -34,6 +34,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends SupportActiv
         loadData();
     }
 
+
     protected void loadData(){
 
     }
@@ -41,6 +42,10 @@ public abstract class BaseActivity<T extends BasePresenter> extends SupportActiv
     @Override
     protected void onDestroy() {
         unbinder.unbind();
+        if(mPresenter!=null){
+            mPresenter.detachView();
+            mPresenter.unSubscribe();
+        }
         super.onDestroy();
     }
 

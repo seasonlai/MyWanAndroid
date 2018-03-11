@@ -33,6 +33,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
 
     @Inject
     public HomePresenter(WanAndroidApi wanAndroidApi, HomeContract.View view) {
+        super(null);
         this.wanAndroidApi = wanAndroidApi;
         this.mView = view;
     }

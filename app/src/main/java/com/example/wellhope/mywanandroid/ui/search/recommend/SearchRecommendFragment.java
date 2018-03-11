@@ -57,7 +57,6 @@ public class SearchRecommendFragment extends BaseFragment<SearchRecommendPresent
                 clickHandle((MultiItemEntity) adapter.getItem(position), view);
             }
         });
-        subscribeEvent();
     }
 
     @Override
@@ -67,20 +66,21 @@ public class SearchRecommendFragment extends BaseFragment<SearchRecommendPresent
     }
 
     private void subscribeEvent() {
-        RxBus.getInstance().toFlowable(HistoryEvent.SingleEvent.class)
-                .subscribe(new Consumer<HistoryEvent.SingleEvent>() {
-                    @Override
-                    public void accept(HistoryEvent.SingleEvent singleEvent) throws Exception {
-                        switch (singleEvent.getType()) {
-                            case HistoryEvent.TYPE_SAVE:
-                                mPresenter.saveHistory(singleEvent.getBean());
-                                break;
-                            case HistoryEvent.TYPE_DEL:
-                                mPresenter.deleteHistory(singleEvent.getBean());
-                                break;
-                        }
-                    }
-                });
+        mPresenter.addDisposable(
+                RxBus.getInstance().toFlowable(HistoryEvent.SingleEvent.class)
+                        .subscribe(new Consumer<HistoryEvent.SingleEvent>() {
+                            @Override
+                            public void accept(HistoryEvent.SingleEvent singleEvent) throws Exception {
+                                switch (singleEvent.getType()) {
+                                    case HistoryEvent.TYPE_SAVE:
+                                        mPresenter.saveHistory(singleEvent.getBean());
+                                        break;
+                                    case HistoryEvent.TYPE_DEL:
+                                        mPresenter.deleteHistory(singleEvent.getBean());
+                                        break;
+                                }
+                            }
+                        }));
     }
 
     private void clickHandle(MultiItemEntity item, View view) {
@@ -132,6 +132,7 @@ public class SearchRecommendFragment extends BaseFragment<SearchRecommendPresent
 
     @Override
     protected void lazyInit() {
+        subscribeEvent();
         mPresenter.getHistory();
         mPresenter.getHotWord();
         mPresenter.getStarWeb();
@@ -142,16 +143,16 @@ public class SearchRecommendFragment extends BaseFragment<SearchRecommendPresent
 
     @Override
     public void clearHistory() {
-        RxBus.getInstance().post(new HistoryEvent.ListEvent(null,HistoryEvent.TYPE_DEL));
-        for (int i = 1; i <= historyCount; i++) {
+        RxBus.getInstance().post(new HistoryEvent.ListEvent(null, HistoryEvent.TYPE_DEL));
+        for (int i = 1; i < historyCount; i++) {
             mAdapter.remove(1);
         }
-        mAdapter.addData(1,new RecommendBean.Tips("暂无历史记录"));
+        mAdapter.addData(1, new RecommendBean.Tips("暂无历史记录"));
     }
 
     @Override
     public void loadHistory(List<RecommendBean.HistoryBean> histories) {
-        if(historyCount==0){
+        if (historyCount == 0) {
             mAdapter.addData(0, new RecommendBean.Title("历史记录", true));
         }
 
@@ -164,11 +165,11 @@ public class SearchRecommendFragment extends BaseFragment<SearchRecommendPresent
         if (histories == null || histories.size() == 0) {
             mAdapter.addData(1, new RecommendBean.Tips("暂无历史记录"));
             historyCount = 2;
-        }else {
+        } else {
             mAdapter.addData(1, histories);
             historyCount = histories.size() + 1;
         }
-        RxBus.getInstance().post(new HistoryEvent.ListEvent(histories,HistoryEvent.TYPE_UPDATE));
+        RxBus.getInstance().post(new HistoryEvent.ListEvent(histories, HistoryEvent.TYPE_UPDATE));
     }
 
     @Override

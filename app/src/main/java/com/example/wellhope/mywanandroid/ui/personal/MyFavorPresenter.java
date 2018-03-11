@@ -24,6 +24,7 @@ public class MyFavorPresenter extends BasePresenter<MyFavorContract.View> implem
 
     @Inject
     public MyFavorPresenter(WanAndroidApi api, MyFavorContract.View view) {
+        super(null);
         mApi = api;
         this.mView = view;
     }

@@ -27,6 +27,7 @@ public class SearchRecommendPresenter extends BasePresenter<SearchRecommendContr
 
     @Inject
     public SearchRecommendPresenter(WanAndroidApi api, SearchRecommendContract.View view) {
+        super(null);
         this.mApi = api;
         this.mView = view;
     }

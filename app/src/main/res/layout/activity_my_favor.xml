@@ -13,21 +13,31 @@
         android:layout_height="@dimen/toolbar_height"
         app:title="我的收藏"
         app:titleTextColor="@color/white"
-        app:titleTextAppearance="@dimen/sp_16"
-        android:background="@color/colorPrimary"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
         android:gravity="center_vertical"
-        app:navigationIcon="@drawable/ic_back"
         app:popupTheme="@style/AppTheme.PopupOverlay">
-
-        <!--<ImageView-->
-            <!--android:id="@+id/iv_back"-->
-            <!--android:layout_width="24dp"-->
-            <!--android:layout_height="24dp"-->
-            <!--android:layout_marginLeft="@dimen/dp_4"-->
-            <!--android:src="@drawable/ic_back"-->
-            <!--/>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:background="@color/colorPrimary"
+            >
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="@dimen/dp_4"
+            android:src="@drawable/ic_back"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:layout_marginLeft="8dp"
+            android:text="我的收藏"/>
+        </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView

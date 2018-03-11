@@ -22,6 +22,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     @Inject
     public LoginPresenter(WanAndroidApi api,LoginContract.View view) {
+        super(null);
         mApi = api;
         mView = view;
     }

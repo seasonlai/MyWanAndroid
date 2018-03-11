@@ -17,7 +17,9 @@ public class BaseModule {
 
     @Provides
     @Nullable
-    BasePresenter providerBasePresenter(){return null;}
+    BasePresenter providerBasePresenter(CompositeDisposable compositeDisposable){
+        return new BasePresenter(compositeDisposable) {};
+    }
 
     @Provides
     CompositeDisposable providerCompositeDisposable() {

@@ -23,6 +23,7 @@ public class SystemPresenter extends BasePresenter<SystemContract.View> implemen
 
     @Inject
     public SystemPresenter(WanAndroidApi api,SystemContract.View view) {
+        super(null);
         mApi = api;
         mView = view;
     }

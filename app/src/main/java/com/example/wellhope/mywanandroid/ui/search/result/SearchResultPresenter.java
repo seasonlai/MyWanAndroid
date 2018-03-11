@@ -22,6 +22,7 @@ public class SearchResultPresenter extends BasePresenter<SearchResultContract.Vi
 
     @Inject
     public SearchResultPresenter(WanAndroidApi api,SearchResultContract.View view) {
+        super(null);
         mApi = api;
         this.mView = view;
     }

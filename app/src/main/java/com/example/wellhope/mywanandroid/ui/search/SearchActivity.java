@@ -67,46 +67,49 @@ public class SearchActivity extends BaseActivity {
 
     private void subscribeEvent() {
         //更改搜索框文字并开始搜索
-        RxBus.getInstance().toFlowable(SearchEvent.class)
-                .subscribe(new Consumer<SearchEvent>() {
-                    @Override
-                    public void accept(SearchEvent searchEvent) throws Exception {
-                        if (!searchEvent.isBeginSearch())
-                            setSearchTxtAndSearch(searchEvent.key);
-                    }
-                });
+        mPresenter.addDisposable(
+                RxBus.getInstance().toFlowable(SearchEvent.class)
+                        .subscribe(new Consumer<SearchEvent>() {
+                            @Override
+                            public void accept(SearchEvent searchEvent) throws Exception {
+                                if (!searchEvent.isBeginSearch())
+                                    setSearchTxtAndSearch(searchEvent.key);
+                            }
+                        }));
 
         //更新搜索框历史记录提示
-        RxBus.getInstance().toFlowable(HistoryEvent.SingleEvent.class)
-                .subscribe(new Consumer<HistoryEvent.SingleEvent>() {
-                    @Override
-                    public void accept(HistoryEvent.SingleEvent singleEvent) throws Exception {
-                        switch (singleEvent.getType()) {
-                            case HistoryEvent.TYPE_DEL_SUCCESS:
-                                mHistoryTipAdapter.remove(singleEvent.getBean());
-                                break;
-                            case HistoryEvent.TYPE_SAVE_SUCCESS:
-                                mHistoryTipAdapter.add(singleEvent.getBean());
-                                break;
-                        }
-                    }
-                });
+        mPresenter.addDisposable(
+                RxBus.getInstance().toFlowable(HistoryEvent.SingleEvent.class)
+                        .subscribe(new Consumer<HistoryEvent.SingleEvent>() {
+                            @Override
+                            public void accept(HistoryEvent.SingleEvent singleEvent) throws Exception {
+                                switch (singleEvent.getType()) {
+                                    case HistoryEvent.TYPE_DEL_SUCCESS:
+                                        mHistoryTipAdapter.remove(singleEvent.getBean());
+                                        break;
+                                    case HistoryEvent.TYPE_SAVE_SUCCESS:
+                                        mHistoryTipAdapter.add(singleEvent.getBean());
+                                        break;
+                                }
+                            }
+                        }));
 
-        RxBus.getInstance().toFlowable(HistoryEvent.ListEvent.class)
-                .subscribe(new Consumer<HistoryEvent.ListEvent>() {
-                    @Override
-                    public void accept(HistoryEvent.ListEvent listEvent) throws Exception {
-                        switch (listEvent.getType()) {
-                            case HistoryEvent.TYPE_UPDATE:
-                                mHistoryTipAdapter.changeData(listEvent.getList());
-                                break;
+        mPresenter.addDisposable(
+                RxBus.getInstance().toFlowable(HistoryEvent.ListEvent.class)
+                        .subscribe(new Consumer<HistoryEvent.ListEvent>() {
+                            @Override
+                            public void accept(HistoryEvent.ListEvent listEvent) throws Exception {
+                                switch (listEvent.getType()) {
+                                    case HistoryEvent.TYPE_UPDATE:
+                                        mHistoryTipAdapter.changeData(listEvent.getList());
+                                        break;
 
-                            case HistoryEvent.TYPE_DEL:
-                                mHistoryTipAdapter.clear();
-                                break;
-                        }
-                    }
-                });
+                                    case HistoryEvent.TYPE_DEL:
+                                        mHistoryTipAdapter.clear();
+                                        break;
+                                }
+                            }
+                        }));
     }
 
 
@@ -124,7 +127,6 @@ public class SearchActivity extends BaseActivity {
     }
 
 
-
     @Override
     public void onBackPressedSupport() {
         super.onBackPressedSupport();
@@ -132,11 +134,11 @@ public class SearchActivity extends BaseActivity {
         mContainer.requestFocus();
     }
 
-    private void toSearchResult(String txt){
-        if(findFragment(SearchResultFragment.class)!=null){
+    private void toSearchResult(String txt) {
+        if (findFragment(SearchResultFragment.class) != null) {
             ToastUtils.showShort("有了");
             RxBus.getInstance().post(new SearchEvent(txt, true));
-        }else {
+        } else {
             getSupportDelegate().start(SearchResultFragment.newInstance(txt));
         }
     }
@@ -184,7 +186,7 @@ public class SearchActivity extends BaseActivity {
 
             @Override
             public void delClick(HistoryBean bean) {
-                RxBus.getInstance().post(new HistoryEvent.SingleEvent(bean,HistoryEvent.TYPE_DEL));
+                RxBus.getInstance().post(new HistoryEvent.SingleEvent(bean, HistoryEvent.TYPE_DEL));
             }
         });
 

@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by Wellhope on 2018/2/28.
@@ -41,6 +42,7 @@ public abstract class BaseFragment<T1 extends BasePresenter> extends SupportFrag
     protected abstract void viewCreated(View view, @Nullable Bundle savedInstanceState);
 
     protected abstract void lazyInit();
+
 
     @Nullable
     @Override
@@ -84,10 +86,6 @@ public abstract class BaseFragment<T1 extends BasePresenter> extends SupportFrag
 //    }
 
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 
     @Override
     public void onDestroy() {
@@ -100,6 +98,7 @@ public abstract class BaseFragment<T1 extends BasePresenter> extends SupportFrag
             mPresenter.unSubscribe();
         }
     }
+
 //
 //    private void initStateView() {
 //        if (mSimpleMultiStateView == null) return;

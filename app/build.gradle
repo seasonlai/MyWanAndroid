@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+// 加载 local.properties 资源
+Properties localProperties = new Properties()
+InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream() ;
+localProperties.load( inputStream )
+
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -9,13 +14,46 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        flavorDimensions "versionCode"
     }
+
+    productFlavors {
+        wandoujia{}
+        xiaomi{}
+        qq{}
+        _360 {}
+    }
+
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+
+    //签名
+    signingConfigs{
+        release {
+            storeFile  file(localProperties['STORE_FILE'])
+            storePassword localProperties['STORE_PWD']
+            keyAlias localProperties['KEY_ALIAS']
+            keyPassword localProperties['KEY_PWD']
+        }
+    }
+
+//    buildTypes {
+//        release {
+//            runProguard false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.release
+//        }
+//    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
+
     buildToolsVersion '26.0.2'
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_7
@@ -55,4 +93,28 @@ dependencies {
     implementation "org.litepal.android:core:$rootProject.litepalVersion"
     implementation "com.beloo.widget:ChipsLayoutManager:$rootProject.chipsLayoutVersion"
     implementation "com.blankj:utilcode:$rootProject.utilcodeVersion"
+    implementation "com.trello.rxlifecycle2:rxlifecycle-components:$rootProject.rxlifecycleVersion"
 }
+
+
+//---------------------------------------------------------//
+
+//productFlavors {
+//    wandoujia {
+//        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "wandoujia"]
+//    }
+//
+//    xiaomi{
+//        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "xiaomi"]
+//    }
+//
+//    qq {
+//        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "qq"]
+//    }
+//
+//    _360 {
+//        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "360"]
+//    }
+//
+//}
+

@@ -23,7 +23,11 @@ import com.example.wellhope.mywanandroid.ui.article.ArticleActivity;
 import com.example.wellhope.mywanandroid.ui.article.ArticleAdapter;
 import com.example.wellhope.mywanandroid.ui.login.LoginActivity;
 
+import org.reactivestreams.Subscription;
+
 import butterknife.BindView;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -49,7 +53,7 @@ public class SearchResultFragment extends BaseFragment<SearchResultPresenter> im
     public static SearchResultFragment newInstance(String searchKey) {
         SearchResultFragment fragment = new SearchResultFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(SEARCH_KEY,searchKey);
+        bundle.putString(SEARCH_KEY, searchKey);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -59,13 +63,13 @@ public class SearchResultFragment extends BaseFragment<SearchResultPresenter> im
         mRecyclerView.requestFocus();
         if (articlePage.getDatas() == null || articlePage.getDatas().size() == 0) {
             mArticleAdapter.setEnableLoadMore(false);
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.item_tips,null);
-            ((TextView)view.findViewById(R.id.tips_content)).setText("无相关结果");
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.item_tips, null);
+            ((TextView) view.findViewById(R.id.tips_content)).setText("无相关结果");
             mArticleAdapter.addFooterView(view);
             return;
         }
         mArticleAdapter.replaceData(articlePage.getDatas());
-        pageNum=1;
+        pageNum = 1;
     }
 
     @Override
@@ -73,8 +77,8 @@ public class SearchResultFragment extends BaseFragment<SearchResultPresenter> im
         mArticleAdapter.loadMoreComplete();
         if (articlePage.getDatas() == null || articlePage.getDatas().size() == 0) {
             mArticleAdapter.setEnableLoadMore(false);
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.item_tips,null);
-            ((TextView)view.findViewById(R.id.tips_content)).setText("拉到底啦");
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.item_tips, null);
+            ((TextView) view.findViewById(R.id.tips_content)).setText("拉到底啦");
             mArticleAdapter.addFooterView(view);
             return;
         }
@@ -140,7 +144,7 @@ public class SearchResultFragment extends BaseFragment<SearchResultPresenter> im
 
     @Override
     protected void lazyInit() {
-        if(getArguments()!=null){
+        if (getArguments() != null) {
             searchKey = getArguments().getString(SEARCH_KEY);
         }
 
@@ -148,16 +152,18 @@ public class SearchResultFragment extends BaseFragment<SearchResultPresenter> im
             mPresenter.search(searchKey, 0);
         }
 
-        RxBus.getInstance().toFlowable(SearchEvent.class)
-                .subscribe(new Consumer<SearchEvent>() {
-                    @Override
-                    public void accept(SearchEvent searchEvent) throws Exception {
-                        if (searchEvent.isBeginSearch()) {
-                            pageNum = 0;
-                            mPresenter.search(searchKey = searchEvent.key, 0);
-                            mArticleAdapter.setEnableLoadMore(true);
-                        }
-                    }
-                });
+
+        mPresenter.addDisposable(
+                RxBus.getInstance().toFlowable(SearchEvent.class)
+                        .subscribe(new Consumer<SearchEvent>() {
+                            @Override
+                            public void accept(SearchEvent searchEvent) throws Exception {
+                                if (searchEvent.isBeginSearch()) {
+                                    pageNum = 0;
+                                    mPresenter.search(searchKey = searchEvent.key, 0);
+                                    mArticleAdapter.setEnableLoadMore(true);
+                                }
+                            }
+                        }));
     }
 }

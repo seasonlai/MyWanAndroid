@@ -61,7 +61,6 @@ public interface WanAndroidApi {
     @FormUrlEncoded
     Observable<MsgBean<ArticlePageBean>> search(@Path("num") int num,@Field("k")String key);
 
-    @POST("/lg/collect/list/{num}/json")
-    @FormUrlEncoded
+    @GET("/lg/collect/list/{num}/json")
     Observable<MsgBean<ArticlePageBean>> getFavor(@Path("num") int num);
 }

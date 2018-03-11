@@ -15,6 +15,7 @@ public class ArticlePresenter extends BasePresenter<ArticleContract.View> implem
 
     @Inject
     public ArticlePresenter(ArticleContract.View view) {
+        super(null);
         this.mView = view;
     }
 

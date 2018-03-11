@@ -24,6 +24,7 @@ public class ArticleListPresenter extends BasePresenter<ArticleListContract.View
 
     @Inject
     public ArticleListPresenter(WanAndroidApi api, ArticleListContract.View view) {
+        super(null);
         mApi = api;
         mView = view;
     }

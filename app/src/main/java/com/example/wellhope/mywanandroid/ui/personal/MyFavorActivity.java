@@ -23,6 +23,7 @@ import com.example.wellhope.mywanandroid.ui.article.ArticleAdapter;
 import com.example.wellhope.mywanandroid.ui.login.LoginActivity;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class MyFavorActivity extends BaseActivity<MyFavorPresenter> implements MyFavorContract.View {
 
@@ -47,13 +48,6 @@ public class MyFavorActivity extends BaseActivity<MyFavorPresenter> implements M
 
     @Override
     protected void bindView(@Nullable Bundle savedInstanceState) {
-
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         mRecyclerView.setAdapter(mArticleAdapter = new ArticleAdapter(null));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -88,6 +82,11 @@ public class MyFavorActivity extends BaseActivity<MyFavorPresenter> implements M
             }
         }, mRecyclerView);
 
+    }
+
+    @OnClick(R.id.iv_back)
+    public void backward(){
+        onBackPressed();
     }
 
     @Override
